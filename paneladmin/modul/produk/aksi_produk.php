@@ -15,10 +15,10 @@
  	$p=$_GET['p'];
  	$act=$_GET['aksi'];
 
- 	if ($act=='hapus') {
+ 	if ($act == 'hapus') {
  		mysqli_query($con,"DELETE FROM barang WHERE kd_barang='$_GET[id]'");
  		header('location:../../media.php?p=produk');
- 	}else if ($act=='tambah') {
+ 	}else if ($act == 'tambah') {
  		//Baca lokasi  file sementara dan nama file dari form (fuplod)
  			$lokasi_file = $_FILES['file']['tmp_name'];
  			$nama_file 	 = $_FILES['file']['name']; 

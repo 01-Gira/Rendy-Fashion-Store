@@ -55,7 +55,7 @@
                                 <td>$r[jumlah_barang]</td>
                                 <td>
                                 <a href=?p=produk&aksi=edit&id=$r[kd_barang]><button type='button' class='btn btn-info'>Edit</button></a>
-                                <a href='$aksi?act=hapus&id=$r[kd_barang]'<button type='button' class='btn btn-danger'>Hapus</button></a>
+                                <a href='$aksi?aksi=hapus&id=$r[kd_barang]'<button type='button' class='btn btn-danger'>Hapus</button></a>
                                 ";
                       $no++;          
                     }
@@ -83,7 +83,7 @@
           <div class="col-lg-12">
             <div class="form-panel">
               <h4 class="mb"><i class="fa fa-angle-right"></i> Form Produk</h4>
-              <form class="form-horizontal style-form" method="POST" action="modul/produk/aksi_produk.php?aksi=tambah"  enctype="multipart/form-data">
+              <form class="form-horizontal style-form" method="POST" action=<?php echo"modul/produk/aksi_produk.php?aksi=tambah";?>  enctype="multipart/form-data">
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">Nama Produk</label>
                   <div class="col-sm-10">
@@ -150,7 +150,7 @@
                 </div>
                 <div class="form-group">
                   <div class="col-sm-10"></div>
-                  <button type="submit" class="btn btn-primary" name="tambah">Simpan</button>
+                  <input type="submit" class="btn btn-primary" value="tambah">
                   </div>
                 </div>
               </form>
@@ -170,7 +170,7 @@
             <div class="col-lg-12">
               <div class="form-panel">
                 <h4 class="mb"><i class="fa fa-angle-right"></i>Edit Produk</h4>
-                <form class="form-horizontal style-form" method="POST" action=<?php echo"modul/produk/aksi_produk.php?act=update";?> enctype="multipart/form-data">
+                <form class="form-horizontal style-form" method="POST" action=<?php echo"modul/produk/aksi_produk.php?aksi=update";?> enctype="multipart/form-data">
                 <input type="hidden" class="form-control" name="kode" value=<?php echo "$r[kd_barang]";?>>
                   <div class="form-group">
                     <label class="col-sm-2 col-sm-2 control-label">Nama Produk</label>

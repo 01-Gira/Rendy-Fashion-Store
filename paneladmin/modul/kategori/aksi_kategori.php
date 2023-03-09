@@ -40,9 +40,9 @@
 		$sql = mysqli_query($con, "INSERT INTO kategori (nama_kategori) VALUES ('$nama_kategori')");
 		header('location:../../media.php?p=kategori');
 	  } else if ($act == 'update') {
-		$kode = $_POST['kode'];
+		$id_kategori = $_POST['id_kategori'];
 		$nama_kategori = $_POST['nama_kategori'];
-		mysqli_query($con, "UPDATE kategori SET nama_kategori='$nama_kategori' WHERE id_kategori='$kode'");
+		mysqli_query($con, "UPDATE kategori SET nama_kategori='$nama_kategori' WHERE id_kategori='$id_kategori'");
 		header('location:../../media.php?p=kategori');
 	  }
 	  
