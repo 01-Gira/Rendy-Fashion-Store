@@ -76,7 +76,7 @@
           <div class="col-lg-12">
             <div class="form-panel">
               <h4 class="mb"><i class="fa fa-angle-right"></i> Form Kategori</h4>
-              <form class="form-horizontal style-form" method="POST" action=<?php echo"modul/kategori/aksi_kategori.php?aksi=tambah";?> enctype="multipart/form-data">
+              <form class="form-horizontal style-form" method="POST" action="modul/kategori/aksi_kategori.php?p=kategori&aksi=tambah" enctype="multipart/form-data">
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">Nama Kategori</label>
                   <div class="col-sm-10">
@@ -107,14 +107,13 @@
               <div class="form-panel">
                 <h4 class="mb"><i class="fa fa-angle-right"></i>Edit Kategori</h4>
                 <input type="hidden" class="form-control" name="kode" value=<?php echo "$r[id_kategori]";?>>
-                <form class="form-horizontal style-form" method="POST" action=<?php echo"modul/kategori/aksi_kategori.php?aksi=update";?> enctype="multipart/form-data">
+                <form class="form-horizontal style-form" method="POST" action="modul/kategori/aksi_kategori.php?p=kategori&aksi=update" enctype="multipart/form-data">
                   <div class="form-group">
                     <label class="col-sm-2 col-sm-2 control-label">Nama Kategori</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" name="nama_kategori" value="<?php echo$r['nama_kategori'];?>">
                     </div>
                   </div>
-                 
                   <div class="form-group">
                     <div class="col-sm-10"></div>
                        <input type="submit" class="btn btn-primary" value="update">

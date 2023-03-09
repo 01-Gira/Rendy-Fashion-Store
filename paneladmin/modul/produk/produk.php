@@ -154,7 +154,7 @@
                 </div>
                 <div class="form-group">
                   <div class="col-sm-10"></div>
-                     <input type="submit" class="btn btn-primary" value="Simpan">
+                  <button type="submit" class="btn btn-primary" name="tambah_produk">Simpan</button>
                   </div>
                 </div>
               </form>
