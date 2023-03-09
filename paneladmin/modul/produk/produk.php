@@ -75,11 +75,7 @@
   break;
   case 'tambah':
 
-
-
  ?>
-
-
 
  <h3><i class="fa fa-angle-right"></i>Master Produk</h3>
         <!-- BASIC FORM ELELEMNTS -->
@@ -87,7 +83,7 @@
           <div class="col-lg-12">
             <div class="form-panel">
               <h4 class="mb"><i class="fa fa-angle-right"></i> Form Produk</h4>
-              <form class="form-horizontal style-form" method="POST" action=<?php echo"modul/produk/aksi_produk.php?act=tambah";?> enctype="multipart/form-data">
+              <form class="form-horizontal style-form" method="POST" action="modul/produk/aksi_produk.php?aksi=tambah"  enctype="multipart/form-data">
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">Nama Produk</label>
                   <div class="col-sm-10">
@@ -154,7 +150,7 @@
                 </div>
                 <div class="form-group">
                   <div class="col-sm-10"></div>
-                  <button type="submit" class="btn btn-primary" name="tambah_produk">Simpan</button>
+                  <button type="submit" class="btn btn-primary" name="tambah">Simpan</button>
                   </div>
                 </div>
               </form>
@@ -188,11 +184,11 @@
                     <select name="kategori" class="form-control">
                       <?php
                       $tampil=mysqli_query($con," select * from kategori order by nama_kategori");
-                      if ($r[id_kategori]==0) {
+                      if ($r['id_kategori']==0) {
                         echo "<option value=0 selected>- Pilih kategori -</option>";
                       }
                       while ($w=mysqli_fetch_array($tampil)) {
-                        if ($r[id_kategori]==$w[id_kategori]){
+                        if ($r['id_kategori']==$w['id_kategori']){
                           echo "<option value=$w[id_kategori] selected>$w[nama_kategori]</option>" ;
                         }
                         else {

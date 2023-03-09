@@ -13,7 +13,7 @@
  	include "../../../config/kompres.php";
 
  	$p=$_GET['p'];
- 	$act=$_GET['act'];
+ 	$act=$_GET['aksi'];
 
  	if ($act=='hapus') {
  		mysqli_query($con,"DELETE FROM barang WHERE kd_barang='$_GET[id]'");
@@ -31,9 +31,8 @@
  			
  			if (!empty($lokasi_file)) {
  				UploadImage($nama_file_unik);
- 				// $sql=mysqli_query($con, "INSERT INTO barang ( nama, id_kategori, deskripsi, jumlah_barang, tanggal_masuk, harga_jual,  foto) values('$_POST[nama]','$_POST[kategori]','$_POST[deskripsi]','$_POST[jumlah]','$_POST[tanggal_masuk]','$_POST[harga_jual]','$nama_file_unik')"); 
- 				$sql=mysqli_query($con, "INSERT INTO produk (id_kategori, nama_produk, harga_produk, deskripsi_produk, gambar_produk) VALUES('$_POST[id_kategori]','$_POST[nama_produk]','$_POST[harga_produk]','$_POST[deskripsi_produk]','$_FILES[gambar_produk][name]')");
-				 header('location:../../media.php?p=produk');
+ 				$sql=mysqli_query($con, "INSERT INTO barang ( nama, id_kategori, deskripsi, jumlah_barang, tanggal_masuk, harga_jual,  foto) values('$_POST[nama]','$_POST[kategori]','$_POST[deskripsi]','$_POST[jumlah]','$_POST[tanggal_masuk]','$_POST[harga_jual]','$nama_file_unik')"); 
+				header('location:../../media.php?p=produk');
  			} else {
  				$sql=mysqli_query($con, "INSERT INTO barang ( nama, id_kategori, deskripsi, jumlah_barang, tanggal_masuk, harga_jual) values('$_POST[nama]','$_POST[kategori]','$_POST[deskripsi]','$_POST[jumlah]','$_POST[tanggal_masuk]','$_POST[harga_jual]')"); 
  			}
@@ -61,4 +60,5 @@
  			}
  		}
  	}
- ?>
+
+?>
