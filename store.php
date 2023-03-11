@@ -67,6 +67,21 @@ require 'config/session.php';
                 </div>
                 <!-- Sortir End -->
 
+                <!-- Kategori -->
+                <div class="form-group">
+                    <label for="category">Kategori:</label>
+                    <select name="category" id="category" class="form-control">
+                    <option value="">Semua Kategori</option>
+                        <?php 
+                        $sql=mysqli_query($con,"SELECT * FROM kategori order by nama_kategori ");
+                        while($r=mysqli_fetch_array($sql)){
+                        echo"<option value=$r[id_kategori]>$r[nama_kategori]</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+                <!-- Kategori end -->
+
                 <button type="submit" class="btn btn-primary">Filter</button>
             </form>
             </div>
@@ -99,7 +114,10 @@ require 'config/session.php';
                         // ambil value dari range harga
                         $min_price = isset($_GET['min_price']) ? $_GET['min_price'] : '';
                         $max_price = isset($_GET['max_price']) ? $_GET['max_price'] : '';
-                    
+
+                        // ambil value dari kategori
+                        $category = isset($_GET['category']) ? $_GET['category'] : '';
+                        
                         // set nilai default untuk sorting
                         $order_by = "kd_barang DESC";
                     
@@ -135,7 +153,12 @@ require 'config/session.php';
 
 
                         // query untuk menampilkan daftar produk
-                        $query = "SELECT * FROM barang WHERE $price_filter jumlah_barang > 0 ORDER BY $order_by";
+                        // $query = "SELECT * FROM barang WHERE id_kategori='$category' AND $price_filter jumlah_barang > 0 ORDER BY $order_by";
+                        if($category != "") {
+                            $query = "SELECT * FROM barang WHERE id_kategori='$category' AND $price_filter jumlah_barang > 0 ORDER BY $order_by";
+                        } else {
+                            $query = "SELECT * FROM barang WHERE $price_filter jumlah_barang > 0 ORDER BY $order_by";
+                        }
                         $result = mysqli_query($con, $query);
                         while ($data = mysqli_fetch_array($result)) {
                         ?>

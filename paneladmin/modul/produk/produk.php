@@ -15,30 +15,16 @@
 
  <h3><i class="fa fa-angle-right"></i> Master Produk</h3>
         <div class="row mt">
-          <div class="col-lg-12" >
+          <div class="col-lg-12">
             <div class="content-panel">
               <h4><i class="fa fa-angle-right"></i> Data Produk</h4>
-              
-              <div class="row">
-              <div class="col-sm-6">
-                  <a href="<?php echo "?p=produk&aksi=tambah"; ?>">
-                      <button type="button" class="btn btn-info">Tambah Data Produk</button>
-                  </a>
-              </div>
-              <div class="col-sm-6" align="right">
-                  <form action="" method="GET" class="form-inline">
-                      <div class="form-group mr-2">
-                          <input type="text" name="search" class="form-control" placeholder="Cari Produk">
-                      </div>
-                      <button type="submit" class="btn btn-primary">Cari</button>
-                  </form>
-              </div>
+              <div class="col-sm-12" align="right">
+                <a href=<?php echo"?p=produk&aksi=tambah";?> ><button type="button" class="btn btn-info">Tambah Data Produk</button></a>
               </div>
               <br> <br>
-              
+            
               <section id="unseen">
                 <br>
-                
                 <table class="table table-bordered table-striped table-condensed">
                   <thead>
                     <tr>
@@ -91,10 +77,6 @@
                             $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY nama ASC");
                             break;
                         }
-      
-                    } else if (isset($_GET['search'])){
-                        $search = $_GET['search'];
-                        $sql = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%$search%' ORDER BY nama ASC");
                     } else {
                         $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY nama ASC");
                     }
