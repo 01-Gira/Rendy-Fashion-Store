@@ -39,15 +39,40 @@ require 'config/session.php';
     <div class="container-fluid pt-5">
         <div class="row px-xl-5">
             <!-- Shop Sidebar Start -->
+            <
             <div class="col-lg-3 col-md-12">
-                <!-- Price Start -->
-                
-                <!-- Size End -->
+            <form method="GET">
+                <!-- Price Range Start -->
+                <div class="form-group">
+                <label for="price_range">Range Harga:</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Harga Min" name="min_price">
+                    <span class="input-group-text">-</span>
+                    <input type="text" class="form-control" placeholder="Harga Max" name="max_price">
+                </div>
+                </div>
+                <!-- Price Range End -->
+
+                <!-- Sortir Start -->
+                <div class="form-group">
+                <label for="sort">Sortir:</label>
+                <select class="form-control" id="sort" name="sort">
+                    <option value="">Tidak Ada</option>
+                    <option value="terbaru">Terbaru</option>
+                    <option value="termurah">Termurah</option>
+                    <option value="termahal">Termahal</option>
+                </select>
+                </div>
+                <!-- Sortir End -->
+
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
             </div>
             <!-- Shop Sidebar End -->
 
 
             <!-- Shop Product Start -->
+          
             <div class="col-lg-9 col-md-12">
                 <div class="row pb-3">
                     <div class="col-12 pb-1">
@@ -65,28 +90,52 @@ require 'config/session.php';
                         </div>
                     </div>
                     <?php
-                        $terlaris=mysqli_query($con, "SELECT * FROM barang order by kd_barang desc");
-                        while ($data=mysqli_fetch_array($terlaris)){
-                        
+                    // ambil value dari sort yang dipilih
+                        $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+                        // set nilai default untuk sorting
+                        $order_by = "kd_barang DESC";
+
+                        switch ($sort) {
+                            case "terbaru":
+                                $order_by = "kd_barang DESC";
+                                break;
+                            case "termurah":
+                                $order_by = "harga_jual ASC";
+                                break;
+                            case "termahal":
+                                $order_by = "harga_jual DESC";
+                                break;
+                            default:
+                                // set nilai default jika sort tidak didefinisikan
+                                $sort = '';
+                                break;
+                        }
+                        // $terlaris=mysqli_query($con, "SELECT * FROM barang order by kd_barang desc");
+                  
+                        // query untuk menampilkan daftar produk
+                        // $query = "SELECT * FROM barang ORDER BY $order_by";
+                        $result=mysqli_query($con, "SELECT * FROM barang order by $order_by");
+                        // $result = mysqli_query($con, $query);
+                        while ($data=mysqli_fetch_array($result)){
                         ?>
-                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                        <div class="card product-item border-0 mb-4">
-                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src=<?php echo "foto_produk/medium_$data[foto]";?> alt=" " /></a>
-                            </div>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <h6 class="text-truncate mb-3"><?php echo"$data[nama]";?></h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6>Rp.<?php echo number_format ($data['harga_jual']);?></h6>
+                        <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+                            <div class="card product-item border-0 mb-4">
+                                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                    <img class="img-fluid w-100" src=<?php echo "foto_produk/medium_$data[foto]";?> alt=" " /></a>
+                                </div>
+                                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                    <h6 class="text-truncate mb-3"><?php echo"$data[nama]";?></h6>
+                                    <div class="d-flex justify-content-center">
+                                        <h6>Rp.<?php echo number_format ($data['harga_jual']);?></h6>
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex justify-content-between bg-light border">
+                                    <a href="detail.php?kd_barang=<?php echo $data['kd_barang']?>" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Lihat Detail</a>
+                                    <a href="beli.php?kd_barang=<?php echo $data['kd_barang']?>" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Masukan Keranjang</a>
                                 </div>
                             </div>
-                            <div class="card-footer d-flex justify-content-between bg-light border">
-                                <a href="detail.php?kd_barang=<?php echo $data['kd_barang']?>" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Lihat Detail</a>
-                                <a href="beli.php?kd_barang=<?php echo $data['kd_barang']?>" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Masukan Keranjang</a>
-                            </div>
+                            
                         </div>
-                        
-                    </div>
                     <?php
                       }   
                      ?>

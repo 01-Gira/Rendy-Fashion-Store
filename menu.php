@@ -1,6 +1,17 @@
 <?php
 include 'config/koneksi.php';
 include 'login.php';
+
+$page = basename($_SERVER['PHP_SELF']); // mendapatkan nama halaman saat ini
+
+// menetapkan kelas "active" pada menu terpilih
+function is_active($page_name) {
+  global $page;
+  if ($page == $page_name) {
+    echo 'active';
+  }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,15 +85,14 @@ include 'login.php';
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="index.php" class="nav-item nav-link">Home</a>
-                            <a href="store.php" class="nav-item nav-link active">Store</a>
-                            <a href="keranjang.php" class="nav-item nav-link">Keranjang</a>
-                            <a href="checkout.php" class="nav-item nav-link">Checkout</a>
-                            <a href="riwayat.php" class="nav-item nav-link">RiwayatPembelian</a>
+                            <a href="index.php" class="nav-item nav-link  <?php is_active('media.php'); ?>">Home</a>
+                            <a href="store.php"  class="nav-item nav-link  <?php is_active('store.php'); ?>" >Store</a>
+                            <a href="keranjang.php" class="nav-item nav-link  <?php is_active('keranjang.php'); ?>">Keranjang</a>
+                            <a href="checkout.php" class="nav-item nav-link"  <?php is_active('checkout.php'); ?>>Checkout</a>
+                            <a href="riwayat.php" class="nav-item nav-link"  <?php is_active('riwayat.php'); ?>>RiwayatPembelian</a>
                             <?php
                             if ($_SESSION['status']=="Belum Login"){
-                            echo '<button type ="button" class="nav-item" data-toggle="modal" data-target="#loginModal"><i class="bi bi-person-circle"></i>Login</button>
-                            ';
+                            echo '<a class="nav-item nav-link" href="#" data-toggle="modal" data-target="#loginModal"><i class="bi bi-person-circle"></i> Login</a>';
                               
                             }
                             else {
