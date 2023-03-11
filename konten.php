@@ -29,58 +29,58 @@
         <div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">Produk Populer</span></h2>
         </div>
-        <div class="row px-xl-5 pb-3">
-                        <?php
-                        $terlaris=mysqli_query($con, "SELECT * FROM barang order by terjual desc LIMIT 4");
-                        while ($data=mysqli_fetch_array($terlaris)){
-                        
-                        ?>
-                        <div class="card product-item border-0 mb-4">
-                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src=<?php echo "foto_produk/medium_$data[foto]";?> alt="" /></a>
-                            </div>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <h6 class="text-truncate mb-3"><?php echo"$data[nama]";?></h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6>Rp.<?php echo number_format ($data['harga_jual']);?></h6>
-                                </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between bg-light border">
-                                <a href="detail.php?kd_barang=<?php echo $data['kd_barang']?>" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Lihat Detail</a>
-                                <a href="beli.php?kd_barang=<?php echo $data['kd_barang']?>" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Masukan Keranjang</a>
-                            </div>
-                        </div>
-                        <?php
-                        }   
-                        ?>
+        <div class="row justify-content-center px-xl-5 pb-3">
+            <?php
+            $terlaris=mysqli_query($con, "SELECT * FROM barang order by terjual desc LIMIT 4");
+            while ($data=mysqli_fetch_array($terlaris)){
+            
+            ?>
+            <div class="card product-item border-0 mb-4 px-4">
+                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                    <img class="img-fluid w-100" src=<?php echo "foto_produk/medium_$data[foto]";?> alt="" /></a>
+                </div>
+                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                    <h6 class="text-truncate mb-3"><?php echo"$data[nama]";?></h6>
+                    <div class="d-flex justify-content-center">
+                        <h6>Rp.<?php echo number_format ($data['harga_jual']);?></h6>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between bg-light border">
+                    <a href="detail.php?kd_barang=<?php echo $data['kd_barang']?>" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Lihat Detail</a>
+                    <a href="beli.php?kd_barang=<?php echo $data['kd_barang']?>" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Masukan Keranjang</a>
+                </div>
+            </div>
+            <?php
+            }   
+            ?>
         </div>
         <div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">Produk Terbaru</span></h2>
         </div>
-        <div class="row px-xl-5 pb-3">
-                        <?php
-                        $produk=mysqli_query($con, "SELECT * FROM barang order by kd_barang desc LIMIT 4");
-                        while ($data=mysqli_fetch_array($produk)){
-                         
-                        ?>
-                        <div class="card product-item border-0 mb-4">
-                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src=<?php echo "foto_produk/medium_$data[foto]";?> alt=" " /></a>
-                            </div>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <h6 class="text-truncate mb-3"><?php echo"$data[nama]";?></h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6>Rp.<?php echo number_format ($data['harga_jual']);?></h6>
-                                </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between bg-light border">
-                                <a href="detail.php?kd_barang=<?php echo $data['kd_barang']?>" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Lihat Detail</a>
-                                <a href="beli.php?kd_barang=<?php echo $data['kd_barang']?>" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Masukan Keranjang</a>
-                            </div>
-                        </div>
-                        <?php
-                        }   
-                        ?>
+        <div class="row justify-content-center px-xl-5 pb-3">
+            <?php
+            $produk=mysqli_query($con, "SELECT * FROM barang order by kd_barang desc LIMIT 4");
+            while ($data=mysqli_fetch_array($produk)){
+                
+            ?>
+            <div class="card product-item border-0 mb-4 px-4">
+                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                    <img class="img-fluid w-100" src=<?php echo "foto_produk/medium_$data[foto]";?> alt=" " /></a>
+                </div>
+                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                    <h6 class="text-truncate mb-3"><?php echo"$data[nama]";?></h6>
+                    <div class="d-flex justify-content-center">
+                        <h6>Rp.<?php echo number_format ($data['harga_jual']);?></h6>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between bg-light border">
+                    <a href="detail.php?kd_barang=<?php echo $data['kd_barang']?>" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Lihat Detail</a>
+                    <a href="beli.php?kd_barang=<?php echo $data['kd_barang']?>" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Masukan Keranjang</a>
+                </div>
+            </div>
+            <?php
+            }   
+            ?>
         </div>
     </div>
 </body>

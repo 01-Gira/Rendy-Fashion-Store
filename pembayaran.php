@@ -11,6 +11,7 @@ $ambil = $con->query("SELECT * FROM pembelian WHERE id_pembelian = '$idpem'");
 $detpem=$ambil->fetch_assoc();
 
 $id_pel_beli = $detpem['id_pelanggan'];
+$kd_barang = $detpem['kd_barang'];
 $id_pel_login = $_SESSION['pelanggan']['id_pelanggan'];
 
 if ($id_pel_login !== $id_pel_beli){
@@ -92,16 +93,23 @@ if ($id_pel_login !== $id_pel_beli){
         <?php 
         if (isset($_POST['kirim'])) {
             $namabukti = $_FILES['bukti']['name'];
-            $lokasibukti = $FILES['bukti']['tmp_name'];
+            $lokasibukti = $_FILES['bukti']['tmp_name'];
             $namafix = date("YmdHis").$namabukti;
-            move_uploaded_file($lokasibukti, "../../../foto_bukti/$namafix");
+            move_uploaded_file($lokasibukti, "foto_bukti/$namafix");
 
             $nama = $_POST['nama'];
             $bank = $_POST['bank'];
             $jumlah = $_POST['jumlah'];
             $tanggal = date("Y-m-d");
 
+            
+            // notifikasi pemesanan
+            $tanggal_pesan = date("Y-m-d H:i:s");
+            $pesan = "Pesanan dengan ID #$idpem telah dibayar.";
+
             $con->query("INSERT INTO pembayaran(id_pembelian, nama, bank, jumlah, tanggal, bukti) VALUES ('$idpem','$nama','$bank','$jumlah','$tanggal','$namafix')");
+            // $con->query("UPDATE pembelian_barang SET pesan ='$pesan' WHERE id_pembelian='$idpem'");
+            $con->query("INSERT INTO pembelian_barang (id_pembelian, kd_barang, jumlah, tanggal, pesan) VALUES ('$idpem','$kd_barang','$jumlah', '$tanggal_pesan', '$pesan')");
 
             $con->query("UPDATE pembelian SET status_pembelian='Sudah dibayar' WHERE id_pembelian='$idpem'");
 

@@ -60,19 +60,53 @@ if (($_SESSION['status'])=="Belum Login"){
                     <thead class="bg-secondary text-dark">
                         <tr>
                             <th>No</th>
-                            <th>Tanggal</th>
-                            <th>Status</th>
-                            <th>Total</th>
+                            <th>Tanggal <a href="?p=riwayat&sort=tanggal_asc"><i class="fa fa-arrow-up"></i></a><a href="?p=riwayat&sort=tanggal_desc"><i class="fa fa-arrow-down"></i></a></th>
+                            <th>Status <a href="?p=riwayat&sort=status_asc"><i class="fa fa-arrow-up"></i></a><a href="?p=riwayat&sort=status_desc"><i class="fa fa-arrow-down"></i></a></th>
+                            <th>Total <a href="?p=riwayat&sort=total_asc"><i class="fa fa-arrow-up"></i></a><a href="?p=riwayat&sort=total_desc"><i class="fa fa-arrow-down"></i></a></th>
                             <th>Opsi</th>
                             
                         </tr>
                     </thead>
                     <tbody class="align-middle">
-                        <?php
+                    <?php
+                       $id_pelanggan = $_SESSION['pelanggan']['id_pelanggan'];
+
+                       if(!empty($id_pelanggan)) {
+                           if (isset($_GET['sort'])) {
+                               $sort = $_GET['sort'];
+                               switch ($sort) {
+                                   case 'tanggal_asc':
+                                       $sql = mysqli_query($con, "SELECT * FROM pembelian WHERE id_pelanggan='$id_pelanggan' ORDER by tanggal_pembelian ASC");
+                                       break;
+                                   case 'tanggal_desc':
+                                       $sql = mysqli_query($con, "SELECT * FROM pembelian WHERE id_pelanggan='$id_pelanggan' ORDER by tanggal_pembelian DESC");
+                                       break;
+                                   case 'status_asc':
+                                       $sql = mysqli_query($con, "SELECT * FROM pembelian WHERE id_pelanggan='$id_pelanggan' ORDER by status_pembelian ASC");
+                                       break;
+                                   case 'status_desc':
+                                       $sql = mysqli_query($con, "SELECT * FROM pembelian WHERE id_pelanggan='$id_pelanggan' ORDER by status_pembelian DESC");
+                                       break;
+                                   case 'total_asc':
+                                       $sql = mysqli_query($con, "SELECT * FROM pembelian WHERE id_pelanggan='$id_pelanggan' ORDER by total_pembelian ASC");
+                                       break;
+                                   case 'total_desc':
+                                       $sql = mysqli_query($con, "SELECT * FROM pembelian WHERE id_pelanggan='$id_pelanggan' ORDER by total_pembelian DESC");
+                                       break;
+                                   default:
+                                       $sql = mysqli_query($con, "SELECT * FROM pembelian WHERE id_pelanggan='$id_pelanggan' order by tanggal_pembelian DESC");
+                                       break;
+                               }
+                           } else {
+                               $sql = mysqli_query($con, "SELECT * FROM pembelian WHERE id_pelanggan='$id_pelanggan' order by tanggal_pembelian DESC");
+                           }
+                       }
+                       
+
+                        
                         $nomor=1;
-                        $id_pelanggan = $_SESSION['pelanggan']['id_pelanggan'];
-                        $ambil=$con->query("SELECT * FROM pembelian WHERE id_pelanggan='$id_pelanggan'");
-                        while ($pecah=$ambil->fetch_assoc()) {
+                        // $sql=$con->query("SELECT * FROM pembelian WHERE id_pelanggan='$id_pelanggan' ORDER BY tanggal_pembelian DESC");
+                        while ($pecah=$sql->fetch_assoc()) {
                             $tanggalindonesia = tgl_indo($pecah['tanggal_pembelian']);
                         ?>
                         <tr>

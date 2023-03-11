@@ -81,6 +81,7 @@
                         $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY nama ASC");
                     }
 
+                    // $sql=mysqli_query($con,"SELECT * FROM barang order by nama asc ");
                     $no=1;
                     while ($r=mysqli_fetch_array($sql)) {
                       $tanggalindonesia = tgl_indo($r['tanggal_masuk']);

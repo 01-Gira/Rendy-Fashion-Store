@@ -88,45 +88,6 @@ if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])) {
                   </div>
                 </a>
               </li>
-              <li>
-                <a href="index.html#">
-                  <div class="task-info">
-                    <div class="desc">Database Update</div>
-                    <div class="percent">60%</div>
-                  </div>
-                  <div class="progress progress-striped">
-                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                      <span class="sr-only">60% Complete (warning)</span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="index.html#">
-                  <div class="task-info">
-                    <div class="desc">Product Development</div>
-                    <div class="percent">80%</div>
-                  </div>
-                  <div class="progress progress-striped">
-                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                      <span class="sr-only">80% Complete</span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="index.html#">
-                  <div class="task-info">
-                    <div class="desc">Payments Sent</div>
-                    <div class="percent">70%</div>
-                  </div>
-                  <div class="progress progress-striped">
-                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
-                      <span class="sr-only">70% Complete (Important)</span>
-                    </div>
-                  </div>
-                </a>
-              </li>
               <li class="external">
                 <a href="#">See All Tasks</a>
               </li>
@@ -157,42 +118,6 @@ if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])) {
                   </a>
               </li>
               <li>
-                <a href="index.html#">
-                  <span class="photo"><img alt="avatar" src="img/ui-divya.jpg"></span>
-                  <span class="subject">
-                  <span class="from">Divya Manian</span>
-                  <span class="time">40 mins.</span>
-                  </span>
-                  <span class="message">
-                  Hi, I need your help with this.
-                  </span>
-                  </a>
-              </li>
-              <li>
-                <a href="index.html#">
-                  <span class="photo"><img alt="avatar" src="img/ui-danro.jpg"></span>
-                  <span class="subject">
-                  <span class="from">Dan Rogers</span>
-                  <span class="time">2 hrs.</span>
-                  </span>
-                  <span class="message">
-                  Love your new Dashboard.
-                  </span>
-                  </a>
-              </li>
-              <li>
-                <a href="index.html#">
-                  <span class="photo"><img alt="avatar" src="img/ui-sherman.jpg"></span>
-                  <span class="subject">
-                  <span class="from">Dj Sherman</span>
-                  <span class="time">4 hrs.</span>
-                  </span>
-                  <span class="message">
-                  Please, answer asap.
-                  </span>
-                  </a>
-              </li>
-              <li>
                 <a href="index.html#">See all messages</a>
               </li>
             </ul>
@@ -200,46 +125,70 @@ if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])) {
           <!-- inbox dropdown end -->
           <!-- notification dropdown start-->
           <li id="header_notification_bar" class="dropdown">
+            <?php
+            $total_unread = mysqli_query($con, "SELECT COUNT(*) AS total_unread FROM pembelian_barang WHERE status_baca = 0");
+            $data_unread = mysqli_fetch_assoc($total_unread);
+            $total_unread_data = $data_unread['total_unread'];
+            
+            ?>
             <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
               <i class="fa fa-bell-o"></i>
-              <span class="badge bg-warning">7</span>
+              <span class="badge bg-theme"><?php echo"$total_unread_data" ?></span>
               </a>
             <ul class="dropdown-menu extended notification">
-              <div class="notify-arrow notify-arrow-yellow"></div>
+              <div class="notify-arrow"></div>
               <li>
-                <p class="yellow">You have 7 new notifications</p>
+                <p class="">You have <?php echo"$total_unread_data" ?> new notifications 
+              </p>
+                
               </li>
-              <li>
-                <a href="index.html#">
-                  <span class="label label-danger"><i class="fa fa-bolt"></i></span>
-                  Server Overloaded.
-                  <span class="small italic">4 mins.</span>
+              <?php
+              $query = mysqli_query($con, "SELECT * FROM pembelian_barang ORDER BY tanggal DESC LIMIT 5 ");
+              while($data=mysqli_fetch_array($query)){
+          
+              ?>
+              <li class="notification-item <?php if($data['status_baca'] == '0'){echo 'bg-success';} ?>">
+                  <a href="index.html#">
+                      <span class="label label-success"><i class="fa fa-bolt"></i></span>
+                      <span class="message"><?php echo"$data[pesan]";?></span>
                   </a>
               </li>
+              <?php } ?>
               <li>
-                <a href="index.html#">
-                  <span class="label label-warning"><i class="fa fa-bell"></i></span>
-                  Memory #2 Not Responding.
-                  <span class="small italic">30 mins.</span>
+                  <a href="../config/read_all.php">
+                      <i class="fa fa-circle-o"></i> Read All
                   </a>
               </li>
-              <li>
-                <a href="index.html#">
-                  <span class="label label-danger"><i class="fa fa-bolt"></i></span>
-                  Disk Space Reached 85%.
-                  <span class="small italic">2 hrs.</span>
-                  </a>
-              </li>
-              <li>
-                <a href="index.html#">
-                  <span class="label label-success"><i class="fa fa-plus"></i></span>
-                  New User Registered.
-                  <span class="small italic">3 hrs.</span>
-                  </a>
-              </li>
-              <li>
-                <a href="index.html#">See all notifications</a>
-              </li>
+              <style>
+                
+
+                .dropdown-menu.notification {
+                  width: 400px; /* atur lebar yang diinginkan */
+                  max-height: 500px; /* atur tinggi maksimal jika konten notifikasi terlalu banyak */
+                  overflow-y: auto; /* atur overflow menjadi auto agar ada scrollbar jika konten terlalu banyak */
+                }
+             
+              /* .notification-item {
+                /* width: fit-content; */
+                /* display: flex; */
+                /* align-items: center; */
+                /* white-space: nowrap; */
+                /* overflow: hidden; */
+                /* text-overflow: ellipsis; */
+              /* } */
+
+              /* .notification-item a {
+                flex: 1;
+              } */
+
+              /* .notification-item .message {
+                  display: inline-block;
+                  width: calc(100% - 30px);
+                  margin-left: 10px;
+              } */
+              </style>
+
+              
             </ul>
           </li>
           <!-- notification dropdown end -->

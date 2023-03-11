@@ -136,26 +136,33 @@ if (empty($_SESSION["keranjang"]) OR !isset($_SESSION["keranjang"])) {
                 </form>
                 <?php
                         if (isset($_POST["checkout"])) {
+                            // pembelian
                             $id_pelanggan = $_SESSION["pelanggan"]["id_pelanggan"];
                             $id_ongkir = $_POST["id_ongkir"];
                             $tanggal_pembelian = date("Ymd");
                             $alamat_pengiriman = $_POST['alamat_pengiriman']; 
-
+                            
+                            // ongkir
                             $ambil = $con->query("SELECT * FROM ongkir WHERE id_ongkir = '$id_ongkir'");
                             $arrray_ongkir = $ambil->fetch_assoc();
                             $nama_kota=$arrray_ongkir['nama_kota'];
                             $tarif = $arrray_ongkir['tarif'];
 
+                            
                             $total_pembelian = $total_belanja + $tarif;
-                            $con -> query("INSERT INTO pembelian(id_pelanggan, id_ongkir, tanggal_pembelian, total_pembelian, nama_kota, tarif, alamat_pengiriman) VALUES ('$id_pelanggan','$id_ongkir','$tanggal_pembelian','$total_pembelian','$nama_kota','$tarif','$alamat_pengiriman')");
+                            $con -> query("INSERT INTO pembelian(id_pelanggan, id_ongkir, kd_barang, tanggal_pembelian, total_pembelian, nama_kota, tarif, alamat_pengiriman) VALUES ('$id_pelanggan','$id_ongkir','$kd_barang','$tanggal_pembelian','$total_pembelian','$nama_kota','$tarif','$alamat_pengiriman')");
                             
                             $id_pembelian_barusan = $con->insert_id;
 
-                            foreach ($_SESSION['keranjang'] as $kd_barang => $jumlah) {
-                                $con->query("INSERT INTO pembelian_barang (id_pembelian, kd_barang, jumlah) VALUES ('$id_pembelian_barusan','$kd_barang','$jumlah')");
-                            
-                            $con->query("UPDATE barang SET jumlah_barang = jumlah_barang - $jumlah WHERE kd_barang='$kd_barang'");
+                            // notifikasi pemesanan
+                            $tanggal = date("Y-m-d H:i:s");
+                            $pesan = "Pesanan baru dengan ID #$id_pembelian_barusan telah diterima.";
 
+
+                            foreach ($_SESSION['keranjang'] as $kd_barang => $jumlah) {
+                                $con->query("INSERT INTO pembelian_barang (id_pembelian, kd_barang, jumlah, tanggal, pesan) VALUES ('$id_pembelian_barusan','$kd_barang','$jumlah', '$tanggal', '$pesan')");
+                                $con->query("UPDATE barang SET jumlah_barang = jumlah_barang - $jumlah WHERE kd_barang='$kd_barang'");
+                        
                             }
                             unset($_SESSION['keranjang']);
                             echo "<script>alert('Pembelian Sukses')

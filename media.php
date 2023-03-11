@@ -28,10 +28,40 @@ require 'config/session.php';
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
+
     <?php
     include 'config/kompres.php';
     ?>
     <?php include'menu.php';?>
+    <div class="container-fluid pt-5">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" style="height: 800px;">
+                <div class="carousel-item active">
+                    <img src="https://picsum.photos/200/300" alt="Slide 1" style="width:100%;">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://picsum.photos/200/300" alt="Slide 2" style="width:100%;">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://picsum.photos/200/300" alt="Slide 3" style="width:100%;">
+                </div>
+            </div>
+            <!-- Left and right controls -->
+            <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
+    </div>
     <!-- Featured Start -->
     <div class="container-fluid pt-5">
         <div class="row px-xl-5 pb-3">

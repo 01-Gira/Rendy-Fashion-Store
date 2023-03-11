@@ -59,40 +59,40 @@ function is_active($page_name) {
                 </div>
             </form>
         </div>
-    </div>
+        
     </div>
     <!-- Topbar End -->
-    <div class="container-fluid mb-6 col-6">
-    <div class="col-lg-9 ">
-        <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-            <a href="" class="text-decoration-none d-block d-lg-none">
-                <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">Rendy's</span>Fashion Store</h1>
-            </a>
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                <div class="navbar-nav mr-auto py-0">
-                    <a href="index.php" class="nav-item nav-link  <?php is_active('media.php'); ?>">Home</a>
-                    <a href="store.php"  class="nav-item nav-link  <?php is_active('store.php'); ?>" >Store</a>
-                    <a href="keranjang.php" class="nav-item nav-link  <?php is_active('keranjang.php'); ?>">Keranjang</a>
-                    <a href="checkout.php" class="nav-item nav-link"  <?php is_active('checkout.php'); ?>>Checkout</a>
-                    <a href="riwayat.php" class="nav-item nav-link"  <?php is_active('riwayat.php'); ?>>Riwayat Pembelian</a>
-                    <?php
-                    if ($_SESSION['status']=="Belum Login"){
-                    echo '<a class="nav-item nav-link" href="#" data-toggle="modal" data-target="#loginModal"><i class="bi bi-person-circle"></i> Login</a>';
-                        
-                    }
-                    else {
-                    echo '<a href="logout.php" class="nav-item nav-link">Logout</a>';
-                    }
-                    ?>
-                </div> 
-        
+     <div class="container-fluid mb-6 col-6">
+            <div class="col-lg-9 ">
+                <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
+                    <a href="" class="text-decoration-none d-block d-lg-none">
+                        <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">Rendy's</span>Fashion Store</h1>
+                    </a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav mr-auto py-0">
+                            <a href="index.php" class="nav-item nav-link  <?php is_active('media.php'); ?>">Home</a>
+                            <a href="store.php"  class="nav-item nav-link  <?php is_active('store.php'); ?>" >Store</a>
+                            <a href="keranjang.php" class="nav-item nav-link  <?php is_active('keranjang.php'); ?>">Keranjang</a>
+                            <a href="checkout.php" class="nav-item nav-link"  <?php is_active('checkout.php'); ?>>Checkout</a>
+                            <a href="riwayat.php" class="nav-item nav-link"  <?php is_active('riwayat.php'); ?>>Riwayat Pembelian</a>
+                            <?php
+                            if ($_SESSION['status']=="Belum Login"){
+                            echo '<a class="nav-item nav-link" href="#" data-toggle="modal" data-target="#loginModal"><i class="bi bi-person-circle"></i> Login</a>';
+                              
+                            }
+                            else {
+                            echo '<a href="logout.php" class="nav-item nav-link">Logout</a>';
+                            }
+                            ?>
+                        </div> 
+                
+                    </div>
+                </nav>
             </div>
-        </nav>
-    </div>
-    </div>
+        </div>
     <!-- Navbar End -->
     
     <div class="modal fade" id="loginModal" role="dialog" ariallabelledby="modalLabel" aria-hidden="true">
