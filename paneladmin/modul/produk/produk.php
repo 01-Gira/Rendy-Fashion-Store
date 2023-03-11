@@ -19,7 +19,7 @@
             <div class="content-panel">
               <h4><i class="fa fa-angle-right"></i> Data Produk</h4>
               <div class="col-sm-12" align="right">
-              <a href=<?php echo"?p=produk&aksi=tambah";?> ><button type="button" class="btn btn-info">Tambah Data Produk</button></a>
+                <a href=<?php echo"?p=produk&aksi=tambah";?> ><button type="button" class="btn btn-info">Tambah Data Produk</button></a>
               </div>
               <br> <br>
               <section id="unseen">
@@ -27,19 +27,71 @@
                 <table class="table table-bordered table-striped table-condensed">
                   <thead>
                     <tr>
-                      <th>No</th>
-                      <th>Nama Produk</th>
-                      <th>Kategori</th>
-                      <th>Harga Jual</th>
-                      <th>Tanggal Masuk</th>
-                      <th>Jumlah</th>
-                      <th>Aksi</th>
-
-
+                    <th>No</th>
+                    <th>Nama <a href="?p=produk&sort=nama_asc"><i class="fa fa-arrow-up"></i></a><a href="?p=produk&sort=nama_desc"><i class="fa fa-arrow-down"></i></a></th>
+                    <th>Kategori <a href="?p=produk&sort=kategori_asc"><i class="fa fa-arrow-up"></i></a><a href="?p=produk&sort=kategori_desc"><i class="fa fa-arrow-down"></i></a></th>
+                    <th>Harga Jual <a href="?p=produk&sort=harga_jual_asc"><i class="fa fa-arrow-up"></i></a><a href="?p=produk&sort=harga_jual_desc"><i class="fa fa-arrow-down"></i></a></th>
+                    <th>Tanggal Masuk <a href="?p=produk&sort=tanggal_masuk_asc"><i class="fa fa-arrow-up"></i></a><a href="?p=produk&sort=tanggal_masuk_desc"><i class="fa fa-arrow-down"></i></a></th>
+                    <th>Jumlah <a href="?p=produk&sort=jumlah_barang_asc"><i class="fa fa-arrow-up"></i></a><a href="?p=produk&sort=jumlah_barang_desc"><i class="fa fa-arrow-down"></i></th>
+                    <th>Aksi</th>
                   </thead>
                   <tbody>
                     <?php
-                    $sql=mysqli_query($con,"SELECT * FROM barang order by nama asc ");
+                    // Cek apakah ada parameter sorting yang dikirimkan
+                    if (isset($_GET['sort'])) {
+                      $sort = $_GET['sort'];
+                      // Set kondisi sorting berdasarkan parameter yang dikirimkan
+                      switch ($sort) {
+                        case 'nama_asc':
+                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY nama ASC");
+                            break;
+                        case 'nama_desc':
+                          $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY nama DESC");
+                          break;
+                        case 'kategori_asc':
+                          $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY id_kategori ASC");
+                          break;
+                        case 'kategori_desc':
+                          $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY id_kategori DESC");
+                          break;
+                        case 'harga_jual_asc':
+                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY harga_jual ASC");
+                            break;
+                        case 'harga_jual_desc':
+                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY harga_jual DESC");
+                            break;
+                        case 'tanggal_masuk_asc':
+                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY tanggal_masuk ASC");
+                            break;
+                        case 'tanggal_masuk_desc':
+                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY tanggal_masuk DESC");
+                            break;
+                        case 'jumlah_barang_asc':
+                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY jumlah_barang ASC");
+                            break;
+                        case 'jumlah_barang_desc':
+                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY jumlah_barang DESC");
+                            break;
+                        default:
+                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY nama ASC");
+                            break;
+                        }
+                      // if ($sort == 'harga_jual_asc') {
+                      //     $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY harga_jual ASC");
+                      // } else if ($sort == 'harga_jual_desc') {
+                      //     $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY harga_jual DESC");
+                      // } else if ($sort == 'tanggal_masuk_asc') {
+                      //     $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY tanggal_masuk ASC");
+                      // } else if ($sort == 'tanggal_masuk_desc') {
+                      //     $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY tanggal_masuk DESC");
+                      // } else {
+                      //     $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY nama ASC");
+                      // }
+                    } else {
+                        $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY nama ASC");
+                    }
+
+                    // $sql=mysqli_query($con,"SELECT * FROM barang order by nama asc ");
                     $no=1;
                     while ($r=mysqli_fetch_array($sql)) {
                       $tanggalindonesia = tgl_indo($r['tanggal_masuk']);

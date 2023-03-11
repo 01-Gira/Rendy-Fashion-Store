@@ -13,7 +13,7 @@
     default:
  ?> 
 
- <h3><i class="fa fa-angle-right"></i> Master Kategori Produk</h3>
+ <h3><i class="fa fa-angle-right"></i> Master Kategori kategori</h3>
         <div class="row mt">
           <div class="col-lg-12">
             <div class="content-panel">
@@ -28,15 +28,34 @@
                   <thead>
                     <tr>
                       <th>No</th>
-                      <th>Kode Kategori</th>
-                      <th>Kategori</th>
+                      <th>Kode Kategori <a href="?p=kategori&sort=kode_kategori_asc"><i class="fa fa-arrow-up"></i></a><a href="?p=kategori&sort=kode_kategori_desc"><i class="fa fa-arrow-down"></i></a></th>
+                      <th>Kategori <a href="?p=kategori&sort=nama_kategori_asc"><i class="fa fa-arrow-up"></i></a><a href="?p=kategori&sort=nama_kategori_desc"><i class="fa fa-arrow-down"></i></a></th>
                       <th>Aksi</th>
-
-
                   </thead>
                   <tbody>
                     <?php
-                    $sql=mysqli_query($con,"SELECT * FROM kategori order by nama_kategori asc ");
+                    if (isset($_GET['sort'])) {
+                      $sort = $_GET['sort'];
+                      switch($sort) {
+                        case 'kode_kategori_asc':
+                          $sql = mysqli_query($con, "SELECT * FROM kategori order by id_kategori ASC ");
+                          break;
+                        case 'kode_kategori_desc':
+                          $sql = mysqli_query($con, "SELECT * FROM kategori order by id_kategori DESC ");
+                          break;
+                        case 'nama_kategori_asc':
+                          $sql = mysqli_query($con, "SELECT * FROM kategori order by nama_kategori ASC ");
+                          break;
+                        case 'nama_kategori_desc':
+                          $sql = mysqli_query($con, "SELECT * FROM kategori order by nama_kategori DESC ");
+                          break;
+                        default:
+                          $sql=mysqli_query($con,"SELECT * FROM kategori order by nama_kategori ASC ");
+                          break;
+                      }
+                    } else {
+                      $sql=mysqli_query($con,"SELECT * FROM kategori order by nama_kategori ASC ");
+                    }
                     $no=1;
                     while ($r=mysqli_fetch_array($sql)) {
                       echo "<tr><td>$no</td>

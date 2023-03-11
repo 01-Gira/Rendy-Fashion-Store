@@ -22,16 +22,50 @@ include '../config/koneksi.php';
                   <thead>
                     <tr>
                       <th>No.</th>
-                      <th>Nama Pelanggan</th>
-                      <th>Tanggal Pembelian</th>
-                      <th>Status Pembelian</th>
-                      <th>Total</th>
+                      <th>Nama Pelanggan <a href="?p=pembelian&sort=nama_pelanggan_asc"><i class="fa fa-arrow-up"></i></a><a href="?p=pembelian&sort=nama_pelanggan_desc"><i class="fa fa-arrow-down"></i></a></th>
+                      <th>Tanggal Pembelian <a href="?p=pembelian&sort=tanggal_pembelian_asc"><i class="fa fa-arrow-up"></i></a><a href="?p=pembelian&sort=tanggal_pembelian_desc"><i class="fa fa-arrow-down"></i></a></th>
+                      <th>Status Pembelian <a href="?p=pembelian&sort=status_pembelian_asc"><i class="fa fa-arrow-up"></i></a><a href="?p=pembelian&sort=status_pembelian_desc"><i class="fa fa-arrow-down"></i></a></th>
+                      <th>Total <a href="?p=pembelian&sort=total_pembelian_asc"><i class="fa fa-arrow-up"></i></a><a href="?p=pembelian&sort=total_pembelian_desc"><i class="fa fa-arrow-down"></i></a></th>
                       <th>Aksi</th>
                   </thead>
                   <tbody>
                   	<?php 
+                    if (isset($_GET['sort'])) {
+                      $sort = $_GET['sort'];
+                      switch($sort) {
+                        case 'nama_pelanggan_asc':
+                          $sql = mysqli_query($con, "SELECT * FROM pembelian JOIN pelanggan ON pembelian.id_pelanggan = pelanggan.id_pelanggan order by pelanggan.nama_pelanggan ASC");
+                          break;
+                        case 'nama_pelanggan_desc':
+                          $sql = mysqli_query($con, "SELECT * FROM pembelian JOIN pelanggan ON pembelian.id_pelanggan = pelanggan.id_pelanggan order by pelanggan.nama_pelanggan DESC");
+                          break;
+                        case 'tanggal_pembelian_asc':
+                          $sql = mysqli_query($con, "SELECT * FROM pembelian JOIN pelanggan ON pembelian.id_pelanggan = pelanggan.id_pelanggan order by tanggal_pembelian ASC");
+                          break;
+                        case 'tanggal_pembelian_desc':
+                          $sql = mysqli_query($con, "SELECT * FROM pembelian JOIN pelanggan ON pembelian.id_pelanggan = pelanggan.id_pelanggan order by tanggal_pembelian DESC");
+                          break;
+                        case 'status_pembelian_asc':
+                          $sql = mysqli_query($con, "SELECT * FROM pembelian JOIN pelanggan ON pembelian.id_pelanggan = pelanggan.id_pelanggan order by status_pembelian ASC");
+                          break;
+                        case 'status_pembelian_desc':
+                          $sql = mysqli_query($con, "SELECT * FROM pembelian JOIN pelanggan ON pembelian.id_pelanggan = pelanggan.id_pelanggan order by status_pembelian DESC");
+                          break;
+                        case 'total_pembelian_asc':
+                          $sql = mysqli_query($con, "SELECT * FROM pembelian JOIN pelanggan ON pembelian.id_pelanggan = pelanggan.id_pelanggan order by total_pembelian ASC");
+                          break;
+                        case 'total_pembelian_desc':
+                          $sql = mysqli_query($con, "SELECT * FROM pembelian JOIN pelanggan ON pembelian.id_pelanggan = pelanggan.id_pelanggan order by total_pembelian DESC");
+                          break;
+                        default:
+                          $sql=mysqli_query($con, "SELECT * FROM pembelian JOIN pelanggan ON pembelian.id_pelanggan = pelanggan.id_pelanggan");
+                          break;
+                      }
+                    }else {
+                      $sql=mysqli_query($con, "SELECT * FROM pembelian JOIN pelanggan ON pembelian.id_pelanggan = pelanggan.id_pelanggan");
+                    }
                   	$nomor = 1;
-                  	$sql=mysqli_query($con, "SELECT * FROM pembelian JOIN pelanggan ON pembelian.id_pelanggan = pelanggan.id_pelanggan");
+                  	
                   	while ($r=mysqli_fetch_array($sql)){
                       $tanggalindonesia = tgl_indo($r['tanggal_pembelian']);
                   	

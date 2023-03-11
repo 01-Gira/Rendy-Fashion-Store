@@ -17,7 +17,13 @@
 
  	if ($act == 'hapus') {
  		mysqli_query($con,"DELETE FROM barang WHERE kd_barang='$_GET[id]'");
-		unlink("foto_produk/".$gambar_produk);
+		 // menghapus gambar terkait produk dari folder
+		// unlink("foto_produk/".$gambar_produk);
+		// menghapus gambar terkait produk dari folder
+		$gambar_produk = $data['foto'];
+		if ($gambar_produk != null) {
+			unlink("foto_produk/".$gambar_produk);
+		}
  		header('location:../../media.php?p=produk');
  	}else if ($act == 'tambah') {
 		 	

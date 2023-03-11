@@ -259,12 +259,6 @@ if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])) {
         <ul class="sidebar-menu" id="nav-accordion">
           <p class="centered"><a href="profile.html"><img src="img/find_user.png" class="img-circle" width="80"></a></p>
           <h5 class="centered"><?php echo $_SESSION['namalengkap'];?></h5>
-          <li class="mt">
-            <a class="active" href="media.php?p=home">
-              <i class="fa fa-dashboard"></i>
-              <span>Dashboard</span>
-              </a>
-          </li>
           <?php include "menu.php"; 
           ?>
           

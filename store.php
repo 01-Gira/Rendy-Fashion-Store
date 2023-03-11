@@ -41,6 +41,7 @@ require 'config/session.php';
             <!-- Shop Sidebar Start -->
             
             <div class="col-lg-3 col-md-12">
+            <h2 class="text-uppercase mb-3">Filter</h2>
             <form method="GET">
                 <!-- Price Range Start -->
                 <div class="form-group">
@@ -58,6 +59,7 @@ require 'config/session.php';
                 <label for="sort">Sortir:</label>
                 <select class="form-control" id="sort" name="sort">
                     <option value="">Tidak Ada</option>
+                    <option value="terpopuler">Terpopuler</option>
                     <option value="terbaru">Terbaru</option>
                     <option value="termurah">Termurah</option>
                     <option value="termahal">Termahal</option>
@@ -90,33 +92,52 @@ require 'config/session.php';
                         </div>
                     </div>
                     <?php
-                    // ambil value dari sort yang dipilih
+                        
+                        // ambil value dari sort yang dipilih
                         $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+                    
+                        // ambil value dari range harga
+                        $min_price = isset($_GET['min_price']) ? $_GET['min_price'] : '';
+                        $max_price = isset($_GET['max_price']) ? $_GET['max_price'] : '';
+                    
                         // set nilai default untuk sorting
                         $order_by = "kd_barang DESC";
-
+                    
                         switch ($sort) {
-                            case "terbaru":
-                                $order_by = "kd_barang DESC";
-                                break;
-                            case "termurah":
-                                $order_by = "harga_jual ASC";
-                                break;
-                            case "termahal":
-                                $order_by = "harga_jual DESC";
-                                break;
-                            default:
-                                // set nilai default jika sort tidak didefinisikan
-                                $sort = '';
-                                break;
+                        case "terpopuler":
+                            $order_by = "terjual DESC";
+                            break;
+                        case "terbaru":
+                            $order_by = "kd_barang DESC";
+                            break;
+                        case "termurah":
+                            $order_by = "harga_jual ASC";
+                            break;
+                        case "termahal":
+                            $order_by = "harga_jual DESC";
+                            break;
+                        default:
+                            // set nilai default jika sort tidak didefinisikan
+                            $sort = '';
+                            break;
                         }
-                        // $terlaris=mysqli_query($con, "SELECT * FROM barang order by kd_barang desc");
-                  
+                    
+                        // filter berdasarkan range harga
+                        $price_filter = "";
+                        if (!empty($min_price) && !empty($max_price)) {
+                        $price_filter = "harga_jual BETWEEN $min_price AND $max_price AND";
+                        } elseif (!empty($min_price)) {
+                        $price_filter = "harga_jual >= $min_price AND";
+                        } elseif (!empty($max_price)) {
+                        $price_filter = "harga_jual <= $max_price AND";
+                        }
+                    
+
+
                         // query untuk menampilkan daftar produk
-                        // $query = "SELECT * FROM barang ORDER BY $order_by";
-                        $result=mysqli_query($con, "SELECT * FROM barang order by $order_by");
-                        // $result = mysqli_query($con, $query);
-                        while ($data=mysqli_fetch_array($result)){
+                        $query = "SELECT * FROM barang WHERE $price_filter jumlah_barang > 0 ORDER BY $order_by";
+                        $result = mysqli_query($con, $query);
+                        while ($data = mysqli_fetch_array($result)) {
                         ?>
                         <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-4">
