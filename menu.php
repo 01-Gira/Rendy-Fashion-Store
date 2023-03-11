@@ -30,7 +30,7 @@ include 'login.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 </head>
 <body>
-     <div class="container-fluid">
+     <!-- <div class="container-fluid">
         <div class="row bg-secondary py-2 px-xl-5">
             <div class="col-lg-6 d-none d-lg-block">
                 <div class="d-inline-flex align-items-center">
@@ -41,7 +41,7 @@ include 'login.php';
                     <a class="text-dark" href="">Support</a>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="" class="text-decoration-none">
@@ -90,7 +90,7 @@ include 'login.php';
                             }
                             ?>
                         </div> 
-                        
+                
                     </div>
                 </nav>
             </div>

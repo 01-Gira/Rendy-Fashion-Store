@@ -83,11 +83,11 @@
           <div class="col-lg-12">
             <div class="form-panel">
               <h4 class="mb"><i class="fa fa-angle-right"></i> Form Produk</h4>
-              <form class="form-horizontal style-form" method="POST" action=<?php echo"modul/produk/aksi_produk.php?aksi=tambah";?>  enctype="multipart/form-data">
+              <form class="form-horizontal style-form" method="POST" action=<?php echo"modul/produk/aksi_produk.php?aksi=tambah";?> enctype="multipart/form-data">
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">Nama Produk</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="nama">
+                    <input type="text" class="form-control" name="nama" required>
                   </div>
                 </div>
                 <div class="form-group">
@@ -106,21 +106,21 @@
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">Deskripsi</label>
                   <div class="col-sm-10">
-                    <textarea class ="form-control" name="deskripsi"> 
+                    <textarea class ="form-control" name="deskripsi" required> 
                     </textarea> 
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">Jumlah</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="jumlah">
+                    <input type="number" class="form-control" name="jumlah" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">Tanggal masuk</label>
                    <div class="col-md-3 col-xs-11">
-                    <div data-date-viewmode="years" data-date-format="yyyy-mm-dd" data-date="01-01-2014" class="input-append date dpYears">
-                      <input type="text" name="tanggal_masuk" value="2014-01-01" size="16" class="form-control">
+                    <div data-date-viewmode="date" data-date-format="yyyy-mm-dd" data-date="now" class="input-append date dpYears">
+                      <input type="text" name="tanggal_masuk" value="2023-01-01" size="16" class="form-control">
                       <span class="input-group-btn add-on">
                         <button class="btn btn-theme" type="button"><i class="fa fa-calendar"></i></button>
                         </span>
@@ -131,7 +131,7 @@
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">Harga Jual</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="harga_jual">
+                    <input type="number" class="form-control" name="harga_jual" required>
                   </div>
                 </div>
                 <div class="form-group">
@@ -175,7 +175,7 @@
                   <div class="form-group">
                     <label class="col-sm-2 col-sm-2 control-label">Nama Produk</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" name="nama" value=<?php echo "$r[nama]";?>>
+                      <input type="text" class="form-control" name="nama" value=<?php echo "$r[nama]";?> required>
                     </div>
                   </div>
                   <div class="form-group">
@@ -206,13 +206,13 @@
                   <div class="form-group">
                     <label class="col-sm-2 col-sm-2 control-label">Deskripsi</label>
                     <div class="col-sm-10">
-                      <textarea class ="form-control" name="deskripsi"><?php echo "$r[deskripsi]";?></textarea> 
+                      <textarea class ="form-control" name="deskripsi" required><?php echo "$r[deskripsi]";?></textarea> 
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="col-sm-2 col-sm-2 control-label">Jumlah</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" name="jumlah" value=<?php echo "$r[jumlah_barang]";?>>
+                      <input type="number" class="form-control" name="jumlah" required value=<?php echo "$r[jumlah_barang]";?>>
                     </div>
                   </div>
                   <div class="form-group">
@@ -230,7 +230,7 @@
                   <div class="form-group">
                     <label class="col-sm-2 col-sm-2 control-label">Harga Jual</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" name="harga_jual" value=<?php echo "$r[harga_jual]";?>>
+                      <input type="number" class="form-control" name="harga_jual" required value=<?php echo "$r[harga_jual]";?>>
                     </div>
                   </div>
                   <div class="form-group">
