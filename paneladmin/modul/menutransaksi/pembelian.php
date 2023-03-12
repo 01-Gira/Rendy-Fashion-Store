@@ -15,6 +15,34 @@ include '../config/koneksi.php';
           <div class="col-lg-12">
             <div class="content-panel p-4">
               <h4><i class="fa fa-angle-right"></i> Data Pembelian </h4>
+              <div class="col-sm-12" align="right">
+                <input type="text" class="form-control xm-2 mb-3 mt-5" style="width: 20%;"  id="search-bar-pembelian" placeholder="Cari kategori...">
+                <script>
+                  document.getElementById("search-bar-pembelian").addEventListener("input", function() {
+                    // Ambil nilai input dan ubah menjadi lowercase
+                    var input = this.value.toLowerCase();
+
+                    // Ambil semua baris pada tabel
+                    var rows = document.getElementsByTagName("tr");
+
+                    // Loop melalui semua baris, mulai dari baris kedua
+                    for (var i = 1; i < rows.length; i++) {
+                        // Ambil value pada kolom 
+                        var namaPelanggan = rows[i].getElementsByTagName("td")[1].textContent.toLowerCase();
+                        var tanggalPembelian = rows[i].getElementsByTagName("td")[2].textContent.toLowerCase();
+                        var statusPembelian = rows[i].getElementsByTagName("td")[3].textContent.toLowerCase();
+                        var totalPembelian = rows[i].getElementsByTagName("td")[4].textContent.toLowerCase();
+
+                        // Cek apakah kategori mengandung nilai input
+                        if (namaPelanggan.indexOf(input) > -1 || tanggalPembelian.indexOf(input) > -1 || statusPembelian.indexOf(input) > -1 || totalPembelian.indexOf(input) > -1) {
+                            rows[i].style.display = "";
+                        } else {
+                            rows[i].style.display = "none";
+                        }
+                    }
+                });
+                  </script>
+              </div>
               <br> <br>
                   
                 <br>

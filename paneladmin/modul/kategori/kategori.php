@@ -21,6 +21,30 @@
               <div class="col-sm-12" align="right">
                 <a href=<?php echo"?p=kategori&aksi=tambah";?> ><button type="button" class="btn btn-info">Tambah Data Kategori</button></a>
                 <input type="text" class="form-control xm-2 mb-3 mt-5" style="width: 20%;"  id="search-bar-kategori" placeholder="Cari kategori...">
+                <script>
+                  // Kategori
+                  document.getElementById("search-bar-kategori").addEventListener("input", function() {
+                      // Ambil nilai input dan ubah menjadi lowercase
+                      var input = this.value.toLowerCase();
+
+                      // Ambil semua baris pada tabel
+                      var rows = document.getElementsByTagName("tr");
+
+                      // Loop melalui semua baris, mulai dari baris kedua
+                      for (var i = 1; i < rows.length; i++) {
+                          // Ambil value pada kolom 
+                          var kodeKategori = rows[i].getElementsByTagName("td")[1].textContent.toLowerCase();
+                          var kategori = rows[i].getElementsByTagName("td")[2].textContent.toLowerCase();
+                        
+                          // Cek apakah kategori mengandung nilai input
+                          if (kodeKategori.indexOf(input) > -1 || kategori.indexOf(input) > -1) {
+                              rows[i].style.display = "";
+                          } else {
+                              rows[i].style.display = "none";
+                          }
+                      }
+                  });
+                </script>
               </div>
               <br> <br>
               <section id="unseen">

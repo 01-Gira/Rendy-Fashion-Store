@@ -20,7 +20,34 @@
               <h4><i class="fa fa-angle-right"></i> Data Produk</h4>
               <div class="col-sm-12" align="right">
                 <a href=<?php echo"?p=produk&aksi=tambah";?> ><button type="button" class="btn btn-info">Tambah Data Produk</button></a>
-                <input type="text" class="form-control xm-2 mb-3 mt-5" style="width: 20%;"  id="search-bar-produk" placeholder="Cari produk...">
+                <input type="text" class="form-control xm-2 mb-3 mt-5" style="width: 20%;"  id="search-bar-produk" placeholder="Cari produk...">        
+                <script>
+                    // produk
+                    document.getElementById("search-bar-produk").addEventListener("input", function() {
+                        // Ambil nilai input dan ubah menjadi lowercase
+                        var input = this.value.toLowerCase();
+
+                        // Ambil semua baris pada tabel
+                        var rows = document.getElementsByTagName("tr");
+
+                        // Loop melalui semua baris, mulai dari baris kedua
+                        for (var i = 1; i < rows.length; i++) {
+                            // Ambil nama produk pada kolom kedua
+                            var namaProduk = rows[i].getElementsByTagName("td")[1].textContent.toLowerCase();
+                            var kategoriProduk = rows[i].getElementsByTagName("td")[2].textContent.toLowerCase();
+                            var hargaProduk = rows[i].getElementsByTagName("td")[3].textContent.toLowerCase();
+                            var tanggalMasuk = rows[i].getElementsByTagName("td")[4].textContent.toLowerCase();
+                            var jumlahProduk = rows[i].getElementsByTagName("td")[5].textContent.toLowerCase();
+
+                            // Cek apakah nama produk, kategori, harga, tanggal masuk, atau jumlah mengandung nilai input
+                            if (namaProduk.indexOf(input) > -1 || kategoriProduk.indexOf(input) > -1 || hargaProduk.indexOf(input) > -1 || tanggalMasuk.indexOf(input) > -1 || jumlahProduk.indexOf(input) > -1) {
+                                rows[i].style.display = "";
+                            } else {
+                                rows[i].style.display = "none";
+                            }
+                        }
+                    });
+                </script>
               </div>
               <div class="col-sm-2 mb-2 d-flex justify-content-end">
                 
