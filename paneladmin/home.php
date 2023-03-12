@@ -22,19 +22,21 @@
                       <?php
                       for($i = 1; $i <= 12; $i++){
                         $month = date("F", mktime(0, 0, 0, $i, 1));
-                        echo "<option value='$i'>$month</option>";
+                        $month_num = date("m", mktime(0, 0, 0, $i, 1));
+                        echo "<option value='$month_num'>$month</option>";
                       }
                       ?>
                     </select>
                   </div>
                   <div class="col">
                     <select class="form-select" name="hari">
-                      <option selected>Pilih Hari</option>
+                      <option value="">Pilih Hari</option>
                       <?php
                       for($i = 1; $i <= 31; $i++){
                         echo "<option value='$i'>$i</option>";
                       }
                       ?>
+                      <option value="0">Tidak Ada</option>
                     </select>
                   </div>
                   <div class="col">
@@ -43,50 +45,54 @@
                 </div>
               </form>
               <?php
-                if(isset($_POST['tahun']) && !empty($_POST['tahun']) && empty($_POST['bulan']) && empty($_POST['hari'])){
-                  // Jika memilih data berdasarkan tahun saja
+               if(isset($_POST['tahun']) && !empty($_POST['tahun']) && empty($_POST['bulan']) && empty($_POST['hari'])){
+                // Jika memilih data berdasarkan tahun saja
+                $tahun = $_POST['tahun'];
+                $query = mysqli_query($con, "SELECT SUM(total_pembelian) AS total_penjualan FROM pembelian WHERE YEAR(tanggal_pembelian) = $tahun");
+                if(mysqli_num_rows($query) > 0){
+                    $data = mysqli_fetch_assoc($query);
+                    $total_penjualan = $data['total_penjualan'];
+                } else {
+                    $total_penjualan = 0;
+                }
+                echo "<p class='card-text fs-1 d-flex align-items-center justify-content-center'>Total Penjualan " . date("F Y", mktime(0, 0, 0, 1, 1, $tahun)) . ": Rp." . number_format($total_penjualan) . "</p>";
+                }else if(isset($_POST['tahun']) && isset($_POST['bulan']) && empty($_POST['hari'])){
+                  // Jika memilih data berdasarkan tahun dan bulan saja
                   $tahun = $_POST['tahun'];
-                  $query = mysqli_query($con, "SELECT SUM(total_pembelian) AS total_penjualan FROM pembelian WHERE YEAR(tanggal_pembelian) = '$tahun' GROUP BY YEAR(tanggal_pembelian)");
+                  $bulan = $_POST['bulan'];
+                  $hari = isset($_POST['hari']) ? $_POST['hari'] : null;
+                  $query = mysqli_query($con, "SELECT SUM(total_pembelian) AS total_penjualan FROM pembelian WHERE YEAR(tanggal_pembelian) = $tahun AND MONTH(tanggal_pembelian) = $bulan" . ($hari ? " AND DAY(tanggal_pembelian) = $hari" : ""));
+
                   if(mysqli_num_rows($query) > 0){
                       $data = mysqli_fetch_assoc($query);
                       $total_penjualan = $data['total_penjualan'];
                   } else {
                       $total_penjualan = 0;
                   }
-                  echo "<p class='card-text fs-1 d-flex align-items-center justify-content-center'>Total Penjualan $tahun: Rp." . number_format($total_penjualan) . "</p>";
+                  $nama_bulan = date('F', mktime(0, 0, 0, $bulan, 1));
+                  echo "<p class='card-text fs-1 d-flex align-items-center justify-content-center'>Total Penjualan $nama_bulan  $tahun: Rp." . number_format($total_penjualan) . "</p>";
                 } else if(isset($_POST['tahun']) && isset($_POST['bulan']) && isset($_POST['hari'])){
                 // Jika memilih data berdasarkan tahun, bulan, dan hari
-                $tahun = $_POST['tahun'];
-                $bulan = $_POST['bulan'];
-                $hari = $_POST['hari'];
-                $query = mysqli_query($con, "SELECT SUM(total_pembelian) AS total_penjualan FROM pembelian WHERE YEAR(tanggal_pembelian) = '$tahun' AND MONTH(tanggal_pembelian) = '$bulan' AND DAY(tanggal_pembelian) = '$hari'");
-                if(mysqli_num_rows($query) > 0){
-                    $data = mysqli_fetch_assoc($query);
-                    $total_penjualan = $data['total_penjualan'];
-                } else {
-                    $total_penjualan = 0;
-                }
-                $bulan = intval($_POST['bulan']); // convert to integer
-                $nama_bulan = date('F', mktime(0, 0, 0, $bulan, 1));
-                echo "<p class='card-text fs-1 d-flex align-items-center justify-content-center'>Total Penjualan $hari $nama_bulan $tahun: Rp." . number_format($total_penjualan) . "</p>";
+                  $tahun = $_POST['tahun'];
+                  $bulan = $_POST['bulan'];
+                  $hari = $_POST['hari'];
+                  $query = mysqli_query($con, "SELECT SUM(total_pembelian) AS total_penjualan FROM pembelian WHERE YEAR(tanggal_pembelian) = '$tahun' AND MONTH(tanggal_pembelian) = '$bulan' AND DAY(tanggal_pembelian) = $hari'");
+                  if(mysqli_num_rows($query) > 0){
+                      $data = mysqli_fetch_assoc($query);
+                      $total_penjualan = $data['total_penjualan'];
+                      
+                  } else {
 
-              } else if(isset($_POST['tahun']) && isset($_POST['bulan']) && !isset($_POST['hari'])){
-                // Jika memilih data berdasarkan tahun dan bulan saja
-                $tahun = $_POST['tahun'];
-                $bulan = $_POST['bulan'];
-                $query = mysqli_query($con, "SELECT SUM(total_pembelian) AS total_penjualan FROM pembelian WHERE YEAR(tanggal_pembelian) = '$tahun' AND MONTH(tanggal_pembelian) = '$bulan'");
-                if(mysqli_num_rows($query) > 0){
-                    $data = mysqli_fetch_assoc($query);
-                    $total_penjualan = $data['total_penjualan'];
-                } else {
-                    $total_penjualan = 0;
+                      $total_penjualan = 0;
+                  }
+                  $bulan = intval($_POST['bulan']); // convert to integer
+                  $nama_bulan = date('F', mktime(0, 0, 0, $bulan, 1));
+                  echo "<p class='card-text fs-1 d-flex align-items-center justify-content-center'>Total Penjualan $hari $nama_bulan $tahun: Rp." . number_format($total_penjualan) . "</p>";
+
+                }else {
+                    // Jika tidak memilih apapun
+                    echo "<p class='card-text fs-1 d-flex align-items-center justify-content-center'>Silahkan pilih fiter terlebih dahulu";
                 }
-                $nama_bulan = date('F', mktime(0, 0, 0, $bulan, 1));
-                echo "<p class='card-text fs-1 d-flex align-items-center justify-content-center'>Total Penjualan $nama_bulan  $tahun: Rp." . number_format($total_penjualan) . "</p>";
-            }else {
-                  // Jika tidak memilih apapun
-                  echo "<p class='card-text fs-1 d-flex align-items-center justify-content-center'>Silahkan pilih fiter terlebih dahulu";
-              }
               ?>
               
             </div>
