@@ -1,7 +1,7 @@
 <h3><i class="fa fa-angle-right"></i> Dashboard</h3>
         <div class="row mt">
         <div class="col">
-          <div class="card mx-3 " style="max-width: fit-content; height: fit-content;">
+          <div class="card mx-3 " style="max-width: 400px; height: fit-content;">
             <div class="card-header text-center">Total Penjualan</div>
             <div class="card-body fw-semibold" style="height: 200px;">
               <form method="post">
@@ -45,7 +45,8 @@
                 </div>
               </form>
               <?php
-               if(isset($_POST['tahun']) && !empty($_POST['tahun']) && empty($_POST['bulan']) && empty($_POST['hari'])){
+               
+               if(isset($_POST['tahun']) && empty($_POST['bulan']) && empty($_POST['hari'])){
                 // Jika memilih data berdasarkan tahun saja
                 $tahun = $_POST['tahun'];
                 $query = mysqli_query($con, "SELECT SUM(total_pembelian) AS total_penjualan FROM pembelian WHERE YEAR(tanggal_pembelian) = $tahun");
@@ -76,7 +77,7 @@
                   $tahun = $_POST['tahun'];
                   $bulan = $_POST['bulan'];
                   $hari = $_POST['hari'];
-                  $query = mysqli_query($con, "SELECT SUM(total_pembelian) AS total_penjualan FROM pembelian WHERE YEAR(tanggal_pembelian) = '$tahun' AND MONTH(tanggal_pembelian) = '$bulan' AND DAY(tanggal_pembelian) = $hari'");
+                  $query = mysqli_query($con, "SELECT SUM(total_pembelian) AS total_penjualan FROM pembelian WHERE YEAR(tanggal_pembelian) = '$tahun' AND MONTH(tanggal_pembelian) = '$bulan' AND DAY(tanggal_pembelian) = $hari");
                   if(mysqli_num_rows($query) > 0){
                       $data = mysqli_fetch_assoc($query);
                       $total_penjualan = $data['total_penjualan'];

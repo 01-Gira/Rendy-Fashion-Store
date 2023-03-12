@@ -16,16 +16,20 @@
  <h3><i class="fa fa-angle-right"></i> Master Produk</h3>
         <div class="row mt">
           <div class="col-lg-12">
-            <div class="content-panel ">
+            <div class="content-panel p-4">
               <h4><i class="fa fa-angle-right"></i> Data Produk</h4>
               <div class="col-sm-12" align="right">
                 <a href=<?php echo"?p=produk&aksi=tambah";?> ><button type="button" class="btn btn-info">Tambah Data Produk</button></a>
+                <input type="text" class="form-control xm-2 mb-3 mt-5" style="width: 20%;"  id="search-bar-produk" placeholder="Cari produk...">
+              </div>
+              <div class="col-sm-2 mb-2 d-flex justify-content-end">
+                
               </div>
               <br> <br>
-            
               <section id="unseen">
                 <br>
-                <table class="table table-bordered table-striped table-condensed mx-3">
+                
+                <table class="table table-bordered table-striped table-condensed">
                   <thead>
                     <tr>
                     <th>No</th>
@@ -38,52 +42,52 @@
                   </thead>
                   <tbody>
                     <?php
-                    // Cek apakah ada parameter sorting yang dikirimkan
+                
+                    // Set kondisi sorting berdasarkan parameter yang dikirimkan
                     if (isset($_GET['sort'])) {
                       $sort = $_GET['sort'];
-                      // Set kondisi sorting berdasarkan parameter yang dikirimkan
                       switch ($sort) {
                         case 'nama_asc':
-                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY nama ASC");
-                            break;
+                          $query = mysqli_query($con, "SELECT * FROM barang ORDER BY nama ASC");
+                          break;
                         case 'nama_desc':
-                          $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY nama DESC");
+                          $query = mysqli_query($con, "SELECT * FROM barang ORDER BY nama DESC");
                           break;
                         case 'kategori_asc':
-                          $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY id_kategori ASC");
+                          $query = mysqli_query($con, "SELECT * FROM barang ORDER BY id_kategori ASC");
                           break;
                         case 'kategori_desc':
-                          $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY id_kategori DESC");
+                          $query = mysqli_query($con, "SELECT * FROM barang ORDER BY id_kategori DESC");
                           break;
                         case 'harga_jual_asc':
-                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY harga_jual ASC");
-                            break;
+                          $query = mysqli_query($con, "SELECT * FROM barang ORDER BY harga_jual ASC");
+                          break;
                         case 'harga_jual_desc':
-                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY harga_jual DESC");
-                            break;
+                          $query = mysqli_query($con, "SELECT * FROM barang ORDER BY harga_jual DESC");
+                          break;
                         case 'tanggal_masuk_asc':
-                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY tanggal_masuk ASC");
-                            break;
+                          $query = mysqli_query($con, "SELECT * FROM barang ORDER BY tanggal_masuk ASC");
+                          break;
                         case 'tanggal_masuk_desc':
-                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY tanggal_masuk DESC");
-                            break;
+                          $query = mysqli_query($con, "SELECT * FROM barang ORDER BY tanggal_masuk DESC");
+                          break;
                         case 'jumlah_barang_asc':
-                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY jumlah_barang ASC");
-                            break;
+                          $query = mysqli_query($con, "SELECT * FROM barang ORDER BY jumlah_barang ASC");
+                          break;
                         case 'jumlah_barang_desc':
-                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY jumlah_barang DESC");
-                            break;
+                          $query = mysqli_query($con, "SELECT * FROM barang ORDER BY jumlah_barang DESC");
+                          break;
                         default:
-                            $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY nama ASC");
-                            break;
+                          $query = mysqli_query($con, "SELECT * FROM barang ORDER BY nama ASC");
+                          break;
                         }
                     } else {
-                        $sql = mysqli_query($con, "SELECT * FROM barang ORDER BY nama ASC");
+                        $query = mysqli_query($con, "SELECT * FROM barang ORDER BY nama ASC");
                     }
 
-                    // $sql=mysqli_query($con,"SELECT * FROM barang order by nama asc ");
+
                     $no=1;
-                    while ($r=mysqli_fetch_array($sql)) {
+                    while ($r=mysqli_fetch_array($query)) {
                       $tanggalindonesia = tgl_indo($r['tanggal_masuk']);
                       echo "<tr><td>$no</td>
                                 <td>$r[nama]</td>";
@@ -100,6 +104,10 @@
                                 <a href='$aksi?aksi=hapus&id=$r[kd_barang]'<button type='button' class='btn btn-danger'>Hapus</button></a>
                                 ";
                       $no++;          
+                    }
+
+                    if(mysqli_num_rows($query) == 0){
+                      echo "<tr><td colspan='7'>Tidak ada data yang ditemukan</td></tr>";
                     }
                     ?>
                    
