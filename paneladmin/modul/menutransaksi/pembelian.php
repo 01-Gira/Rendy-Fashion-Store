@@ -41,7 +41,7 @@ include '../config/koneksi.php';
                         }
                     }
                 });
-                  </script>
+                </script>
               </div>
               <br> <br>
                   
