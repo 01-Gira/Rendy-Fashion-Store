@@ -16,9 +16,47 @@ include '../config/koneksi.php';
             <div class="content-panel">
               <h4><i class="fa fa-angle-right"></i> Data Pembelian </h4>
               <br> <br>
-              
+                  <form method="post">
+        
+                    <div class="row mb-3 ms-1">
+                      <div class="col">
+                        <select class="form-select" name="tahun">
+                          <option selected>Pilih Tahun</option>
+                          <?php
+                          for($i = 2021; $i <= date('Y'); $i++){
+                            echo "<option value='$i'>$i</option>";
+                          }
+                          ?>
+                        </select>
+                      </div>
+                      <div class="col">
+                        <select class="form-select" name="bulan">
+                          <option selected>Pilih Bulan</option>
+                          <?php
+                          for($i = 1; $i <= 12; $i++){
+                            $month = date("F", mktime(0, 0, 0, $i, 1));
+                            echo "<option value='$i'>$month</option>";
+                          }
+                          ?>
+                        </select>
+                      </div>
+                      <div class="col">
+                        <select class="form-select" name="hari">
+                          <option selected>Pilih Hari</option>
+                          <?php
+                          for($i = 1; $i <= 31; $i++){
+                            echo "<option value='$i'>$i</option>";
+                          }
+                          ?>
+                        </select>
+                      </div>
+                      <div class="col">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                      </div>
+                    </div>
+                  </form>
                 <br>
-                <table class="table table-bordered table-striped table-condensed">
+                <table class="table table-bordered table-striped table-condensed mx-3">
                   <thead>
                     <tr>
                       <th>No.</th>

@@ -16,7 +16,7 @@
  <h3><i class="fa fa-angle-right"></i> Master Produk</h3>
         <div class="row mt">
           <div class="col-lg-12">
-            <div class="content-panel">
+            <div class="content-panel ">
               <h4><i class="fa fa-angle-right"></i> Data Produk</h4>
               <div class="col-sm-12" align="right">
                 <a href=<?php echo"?p=produk&aksi=tambah";?> ><button type="button" class="btn btn-info">Tambah Data Produk</button></a>
@@ -25,7 +25,7 @@
             
               <section id="unseen">
                 <br>
-                <table class="table table-bordered table-striped table-condensed">
+                <table class="table table-bordered table-striped table-condensed mx-3">
                   <thead>
                     <tr>
                     <th>No</th>
