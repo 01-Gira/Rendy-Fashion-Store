@@ -58,8 +58,7 @@
  		//Apabila gambar tidak di ganti
  			
  			if (empty($lokasi_file)) {
- 				
- 				$sql=mysqli_query($con, "UPDATE barang set  nama ='$_POST[nama]' , id_kategori ='$_POST[kategori]', deskripsi ='$_POST[deskripsi]' , jumlah_barang ='$_POST[jumlah]', tanggal_masuk ='$_POST[tanggal_masuk]' , harga_jual ='$_POST[harga_jual]',  foto ='$nama_file_unik' where kd_barang ='$_POST[kode]'");
+ 				$sql=mysqli_query($con, "UPDATE barang set  nama ='$_POST[nama]' , id_kategori ='$_POST[kategori]', deskripsi ='$_POST[deskripsi]' , jumlah_barang ='$_POST[jumlah]', tanggal_masuk ='$_POST[tanggal_masuk]' , harga_jual ='$_POST[harga_jual]' where kd_barang ='$_POST[kode]'");
  				header('location:../../media.php?p=produk');
  			} else {
 				UploadImage($nama_file_unik);

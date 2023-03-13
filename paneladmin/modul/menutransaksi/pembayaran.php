@@ -1,6 +1,6 @@
 <?php 
 include '../config/koneksi.php';
-require 'config/fungsi_indotgl.php';
+
 
 error_reporting(0);
 
@@ -15,6 +15,10 @@ $id_pembelian = $_GET['id'];
 
 $sql=mysqli_query($con, "SELECT * FROM pembayaran WHERE id_pembelian='$id_pembelian'");
 $r=mysqli_fetch_assoc($sql);
+
+$sql=mysqli_query($con, "SELECT * FROM pembelian WHERE id_pembelian='$id_pembelian'");
+$r2=mysqli_fetch_assoc($sql);
+
 $id_pelanggan = $r['id_pelanggan'];
 $tanggalindonesia = tgl_indo($r['tanggal']);
             
@@ -56,14 +60,14 @@ $tanggalindonesia = tgl_indo($r['tanggal']);
         <form method="POST">
         	<div class="form-group">
         		<label>No Resi Pengiriman</label>
-        		<input type="text" name="resi" class="form-control" value="<?php echo $r['resi_pembelian']; ?>" <?php if(!empty($r['resi_pembelian'])) { echo "disabled";} ?> >
+        		<input type="text" name="resi" class="form-control" value="<?php echo $r2['resi_pembelian']; ?>" <?php if(!empty($r2['resi_pembelian'])) { echo "disabled";} ?> >
         	</div>
         	<div class="form-group">
         		<label>Status</label>
         		<select name="status" class="form-control">
         			<option value="">Pilih Status</option>
         			<option value="Lunas">Lunas</option>
-        			<option value="Barang Dikirim">Barang Dikirim</option>
+        			<?php if($r2['status_pembelian'] != 'Barang Dikirim') { echo "<option value='Barang Dikirim'>Barang Dikirim</option>"; } ?>
 					<option value="Pembelian Ditolak">Pembelian Ditolak</option>
         			<option value="Batal">Pembelian Dibatalkan</option>
         		</select>

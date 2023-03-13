@@ -133,7 +133,7 @@ if (($_SESSION['status'])=="Belum Login"){
                                     // jika tombol "Barang telah diterima" ditekan
                                     if(isset($_POST['terima_barang'])) {
                                         $id_pembelian = $_POST['id_pembelian'];
-                                        $status_pembelian = 'Barang diterima';
+                                        $status_pembelian = 'Barang Diterima';
                                         // update status pembelian menjadi "selesai"
                                         $con->query("UPDATE pembelian SET status_pembelian='$status_pembelian' WHERE id_pembelian='$id_pembelian'");
 

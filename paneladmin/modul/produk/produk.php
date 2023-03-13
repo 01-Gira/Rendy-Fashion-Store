@@ -128,7 +128,7 @@
                                 <td>$r[jumlah_barang]</td>
                                 <td>
                                 <a href=?p=produk&aksi=edit&id=$r[kd_barang]><button type='button' class='btn btn-info'>Edit</button></a>
-                                <a href='$aksi?aksi=hapus&id=$r[kd_barang]'<button type='button' class='btn btn-danger'>Hapus</button></a>
+                                <a href='$aksi?aksi=hapus&id=$r[kd_barang]><button type='button' class='btn btn-danger' onclick='return confirm('Anda yakin ingin')'>Hapus</button></a>
                                 ";
                       $no++;          
                     }
@@ -252,7 +252,7 @@
                   <div class="form-group">
                     <label class="col-sm-2 col-sm-2 control-label">Nama Produk</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" name="nama" value=<?php echo "$r[nama]";?> required>
+                      <input type="text" class="form-control" name="nama" value="<?php echo $r['nama']; ?>" required>
                     </div>
                   </div>
                   <div class="form-group">

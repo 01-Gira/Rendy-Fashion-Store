@@ -46,7 +46,7 @@ include '../config/koneksi.php';
               <br> <br>
                   
                 <br>
-                <table class="table table-bordered table-striped table-condensed">
+                <table class="table table-bordered table-striped table-condensed" style="height: fit-content;">
                   <thead>
                     <tr>
                       <th>No.</th>
@@ -90,7 +90,7 @@ include '../config/koneksi.php';
                           break;
                       }
                     }else {
-                      $sql=mysqli_query($con, "SELECT * FROM pembelian JOIN pelanggan ON pembelian.id_pelanggan = pelanggan.id_pelanggan");
+                      $sql=mysqli_query($con, "SELECT * FROM pembelian JOIN pelanggan ON pembelian.id_pelanggan = pelanggan.id_pelanggan order by tanggal_pembelian DESC");
                     }
                   	$nomor = 1;
                   	
@@ -105,28 +105,34 @@ include '../config/koneksi.php';
                       <td><?php echo $r['status_pembelian']?></td>
                   		<td>Rp.<?php echo number_format($r['total_pembelian']);?></td>
                   		<td>
-                      <a href="?p=detail_pembelian&id=<?php echo $r['id_pembelian'];?>" class="btn btn-primary"> Detail </a> 
-                      <?php if($r['status_pembelian']!=="pending"): ?>
-                      <a href="?p=pembayaran&id=<?php echo $r['id_pembelian'];?>" class="btn btn-success"> Lihat Pembayaran </a>
-                      <?php elseif($pecah['status_pembelian']=="Barang dikirim"): ?>
+                      <div style="display: flex;">
+                      <a href="?p=detail_pembelian&id=<?php echo $r['id_pembelian'];?>" class="btn btn-primary" style="margin-right: 5px;"> Detail </a> 
+                      <?php if($r['status_pembelian']=="!pending"): ?>
+                      <a href="?p=pembayaran&id=<?php echo $r['id_pembelian'];?>" class="btn btn-success" style="margin-right: 5px;"> Lihat Pembayaran </a>
+                      <?php elseif($r['status_pembelian']=="Barang Diterima"): ?>
                         <form method="post">
-                            <input type="hidden" name="id_pembelian" value="<?php echo $pecah['id_pembelian']; ?>">
-                            <button type="submit" name="terima_barang" class="btn btn-success mt-1" onclick="return confirm('Anda yakin barang sudah diterima?')"> Barang telah diterima</button>
-                            <style>
-        
-                            </style>
+                            <input type="hidden" name="id_pembelian" value="<?php echo $r['id_pembelian']; ?>">
+                            <button type="submit" name="pesanan_selesai" class="btn btn-warning" style="margin-right: 5px;" onclick="return confirm('Anda yakin pesanan sudah selesai?')"> Selesai</button>
                         </form>
                         <?php 
                         // jika tombol "Barang telah diterima" ditekan
-                        if(isset($_POST['terima_barang'])) {
+                        if(isset($_POST['pesanan_selesai'])) {
                             $id_pembelian = $_POST['id_pembelian'];
+                            $id_pelanggan = $r['id_pelanggan'];
+                           
                             // update status pembelian menjadi "selesai"
-                            $con->query("UPDATE pembelian SET status_pembelian='Selesai' WHERE id_pembelian='$id_pembelian'");
-                            echo"<script>alert('Barang telah diterima');
-                            window.location.replace('riwayat.php')</script>";
+                            $con->query("UPDATE pembelian SET status_pembelian='Pesanan Selesai' WHERE id_pembelian='$id_pembelian'");
+                            // notifikasi pemesanan
+                            $tanggal = date("Y-m-d H:i:s");
+                            $pesan = "Pesanan dengan ID #$id_pembelian telah selesai";
+                            $con->query("INSERT INTO notifikasi_pelanggan (id_pelanggan, id_pesanan, tanggal, pesan) VALUES ('$id_pelanggan','$id_pembelian','$tanggal','$pesan')");
+
+                            echo"<script>alert('Pesanan telah selesai');
+                            window.location.replace('media.php?p=pembelian')</script>";
                         }
                         ?>
                       <?php endif ?>   
+                      </div>
                       </td>
                   	</tr>
                   	<?php $nomor++?>
