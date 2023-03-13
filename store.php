@@ -1,6 +1,7 @@
 <?php
 require 'config/koneksi.php';
 require 'config/session.php';
+include 'config/pagination.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,7 +108,7 @@ require 'config/session.php';
                         </div>
                     </div>
                     <?php
-                        
+
                         // ambil value dari sort yang dipilih
                         $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
                     
@@ -155,9 +156,9 @@ require 'config/session.php';
                         // query untuk menampilkan daftar produk
                         // $query = "SELECT * FROM barang WHERE id_kategori='$category' AND $price_filter jumlah_barang > 0 ORDER BY $order_by";
                         if($category != "") {
-                            $query = "SELECT * FROM barang WHERE id_kategori='$category' AND $price_filter jumlah_barang > 0 ORDER BY $order_by";
+                            $query = "SELECT * FROM barang WHERE id_kategori='$category' AND $price_filter jumlah_barang > 0 ORDER BY $order_by LIMIT $offset, $limit";
                         } else {
-                            $query = "SELECT * FROM barang WHERE $price_filter jumlah_barang > 0 ORDER BY $order_by";
+                            $query = "SELECT * FROM barang WHERE $price_filter jumlah_barang > 0 ORDER BY $order_by LIMIT $offset, $limit";
                         }
                         $result = mysqli_query($con, $query);
                         while ($data = mysqli_fetch_array($result)) {
@@ -183,9 +184,39 @@ require 'config/session.php';
                     <?php
                       }   
                      ?>
+                     <div class="col-12">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                <?php if ($current_page > 1) { ?>
+                                <a class="page-link" href="store.php?page=<?php  echo ($current_page - 1); ?>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                                <?php } ?>
+                                </li>
+                                <?php for($i = 1; $i <= $total_pages; $i++) { 
+                                    if($i === $current_page) {?>
+                                <li class="page-item active"><a class="page-link" href="#"><?php  echo "$i"  ?></a></li>
+                                <?php  } else {?>
+                                <li class="page-item"><a class="page-link" href="store.php?page=<?php echo "$i"; ?> "><?php echo "$i";  ?></a></li>
+                                <?php 
+                                        }
+                                    } 
+                                if($current_page < $total_pages) {
+                                    ?>
+                                <a class="page-link" href="store.php?page=<?php echo ($current_page + 1); ?>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                                <?php } ?>
+                                </li>
+                            </ul>
+                        </nav>
+                     </div>
                 </div>
+                
             </div>
             <!-- Shop Product End -->
+            
         </div>
     </div>
     <!-- Shop End -->
@@ -255,6 +286,7 @@ require 'config/session.php';
                 <img class="img-fluid" src="img/payments.png" alt="">
             </div>
         </div>
+        
     </div>
     <!-- Footer End -->
 

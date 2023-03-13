@@ -312,7 +312,7 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label col-md-3">Foto Produk</label>
-                    <img src=<?php echo "../foto_produk/small_$r[foto]" ;?> >
+                    <img src=<?php echo "../foto_produk/$r[foto]" ;?> >
                     <div class="controls col-md-9">
                       <div class="fileupload fileupload-new" data-provides="fileupload">
                         <span class="btn btn-theme02 btn-file">

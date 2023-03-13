@@ -1,6 +1,7 @@
 <?php
 include "../config/koneksi.php";
 include "../config/fungsi_indotgl.php";
+
 session_start();
 error_reporting();
 if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])) {
