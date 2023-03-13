@@ -120,12 +120,31 @@ if (($_SESSION['status'])=="Belum Login"){
                             
                             <td class="align-middle">Rp.<?php echo number_format($pecah['total_pembelian']);?></td>
                             <td class="align-middle">
-                                <a href="nota.php?id=<?php echo $pecah['id_pembelian']?>" class="btn btn-info"> Nota </a>
+                                <a href="nota.php?id=<?php echo $pecah['id_pembelian']?>" class="btn btn-info me-3">Nota</a>
                                 <?php if($pecah['status_pembelian']=="pending"): ?>
-                                <a href="pembayaran.php?id=<?php echo $pecah['id_pembelian'];?>" class="btn btn-success"> Input Pembayaran </a>
+                                    <a href="pembayaran.php?id=<?php echo $pecah['id_pembelian'];?>" class="btn btn-success"> Input Pembayaran </a>
+                                <?php elseif($pecah['status_pembelian']=="Barang dikirim"): ?>
+                                    <form method="post">
+                                        <input type="hidden" name="id_pembelian" value="<?php echo $pecah['id_pembelian']; ?>">
+                                        <button type="submit" name="terima_barang" class="btn btn-success mt-1" onclick="return confirm('Anda yakin barang sudah diterima?')"> Barang telah diterima</button>
+                                        <style>
+                    
+                                        </style>
+                                    </form>
+                                    <?php 
+                                    // jika tombol "Barang telah diterima" ditekan
+                                    if(isset($_POST['terima_barang'])) {
+                                        $id_pembelian = $_POST['id_pembelian'];
+                                        // update status pembelian menjadi "selesai"
+                                        $con->query("UPDATE pembelian SET status_pembelian='Selesai' WHERE id_pembelian='$id_pembelian'");
+                                        echo"<script>alert('Barang telah diterima');
+                                        window.location.replace('riwayat.php')</script>";
+                                    }
+                                    ?>
                                 <?php else: ?>
-                                <a href="lihat_pembayaran.php?id=<?php echo $pecah['id_pembelian'];?>" class="btn btn-warning"> Lihat Pembayaran </a>
+                                    <a href="lihat_pembayaran.php?id=<?php echo $pecah['id_pembelian'];?>" class="btn btn-warning"> Lihat Pembayaran </a>
                                 <?php endif ?>
+
                             </td>
                         <?php $nomor++;?>
                         <?php 

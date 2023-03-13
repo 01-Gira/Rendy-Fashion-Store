@@ -11,8 +11,8 @@ include "../config/koneksi.php";
 
 <div class="row mt">
 <h2 class="text-center"> Detail Pembelian </h2>
-          <div class="col-lg-12">
-            <div class="content-panel">
+          <div class="col-lg-12 ">
+            <div class="content-panel p-4">
             	<?php
 				$ambil = $con->query("SELECT * FROM pembelian JOIN pelanggan ON pembelian.id_pelanggan=pelanggan.id_pelanggan WHERE pembelian.id_pembelian='$_GET[id]'");
 				$detail = $ambil->fetch_assoc();

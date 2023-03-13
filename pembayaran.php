@@ -8,10 +8,12 @@ if (($_SESSION['status'])=="Belum Login"){
 }
 $idpem = $_GET['id'];
 $ambil = $con->query("SELECT * FROM pembelian WHERE id_pembelian = '$idpem'");
+
 $detpem=$ambil->fetch_assoc();
 
 $id_pel_beli = $detpem['id_pelanggan'];
 $kd_barang = $detpem['kd_barang'];
+$no_resi = $detpem['resi_pembelian'];
 $id_pel_login = $_SESSION['pelanggan']['id_pelanggan'];
 
 if ($id_pel_login !== $id_pel_beli){
@@ -92,6 +94,7 @@ if ($id_pel_login !== $id_pel_beli){
         </form>
         <?php 
         if (isset($_POST['kirim'])) {
+
             $namabukti = $_FILES['bukti']['name'];
             $lokasibukti = $_FILES['bukti']['tmp_name'];
             $namafix = date("YmdHis").$namabukti;
@@ -109,7 +112,7 @@ if ($id_pel_login !== $id_pel_beli){
 
             $con->query("INSERT INTO pembayaran(id_pembelian, nama, bank, jumlah, tanggal, bukti) VALUES ('$idpem','$nama','$bank','$jumlah','$tanggal','$namafix')");
             // $con->query("UPDATE pembelian_barang SET pesan ='$pesan' WHERE id_pembelian='$idpem'");
-            $con->query("INSERT INTO pembelian_barang (id_pembelian, kd_barang, jumlah, tanggal, pesan) VALUES ('$idpem','$kd_barang','$jumlah', '$tanggal_pesan', '$pesan')");
+            $con->query("INSERT INTO pembelian_barang (id_pelanggan, id_pembelian, kd_barang, jumlah, tanggal, pesan) VALUES ('$id_pel_login','$idpem','$kd_barang','$jumlah', '$tanggal_pesan', '$pesan')");
 
             $con->query("UPDATE pembelian SET status_pembelian='Sudah dibayar' WHERE id_pembelian='$idpem'");
 

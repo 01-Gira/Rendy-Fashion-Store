@@ -49,7 +49,7 @@ function is_active($page_name) {
                 <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">Rendy's</span>Fashion Store</h1>
             </a>
         </div>
-        <div class="col-lg-6 col-6 text-left">
+        <div class="col-sm-3 m-auto ">
             <form action="pencarian.php" method="GET">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Cari Produk" name="keyword">
@@ -61,11 +61,7 @@ function is_active($page_name) {
                 </div>
             </form>
         </div>
-        
-    </div>
-    <!-- Topbar End -->
-     <div class="container-fluid mb-6 col-6">
-            <div class="col-lg-9 ">
+        <div class="col-sm-5 m-auto ">
                 <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
                     <a href="" class="text-decoration-none d-block d-lg-none">
                         <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">Rendy's</span>Fashion Store</h1>
@@ -90,12 +86,11 @@ function is_active($page_name) {
                             }
                             ?>
                         </div> 
-                
                     </div>
                 </nav>
             </div>
-        </div>
-    <!-- Navbar End -->
+    </div>
+
     
     <div class="modal fade" id="loginModal" role="dialog" ariallabelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

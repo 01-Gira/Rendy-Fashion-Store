@@ -10,6 +10,7 @@
                     <select class="form-select" name="tahun">
                       <option selected>Pilih Tahun</option>
                       <?php
+
                       for($i = 2021; $i <= date('Y'); $i++){
                         echo "<option value='$i'>$i</option>";
                       }
@@ -44,9 +45,10 @@
                   </div>
                 </div>
               </form>
+              <div class="col p-4 text-align-center">
               <?php
                
-               if(isset($_POST['tahun']) && empty($_POST['bulan']) && empty($_POST['hari'])){
+               if(isset($_POST['tahun']) && !empty($_POST['tahun']) && empty($_POST['bulan']) && empty($_POST['hari'])){
                 // Jika memilih data berdasarkan tahun saja
                 $tahun = $_POST['tahun'];
                 $query = mysqli_query($con, "SELECT SUM(total_pembelian) AS total_penjualan FROM pembelian WHERE YEAR(tanggal_pembelian) = $tahun");
@@ -90,11 +92,16 @@
                   $nama_bulan = date('F', mktime(0, 0, 0, $bulan, 1));
                   echo "<p class='card-text fs-1 d-flex align-items-center justify-content-center'>Total Penjualan $hari $nama_bulan $tahun: Rp." . number_format($total_penjualan) . "</p>";
 
+                } else if (empty($_POST['tahun'])  && empty($_POST['bulan']) && !empty($_POST['hari'])) {
+                  // Jika tidak memilih apapun tahun dan bulan
+                  echo "<p class='card-text fs-1 d-flex align-items-center justify-content-center'>Silahkan pilih fiter tahun dan bulan terlebih dahulu";
                 }else {
-                    // Jika tidak memilih apapun
-                    echo "<p class='card-text fs-1 d-flex align-items-center justify-content-center'>Silahkan pilih fiter terlebih dahulu";
+                  // Jika tidak memilih apapun
+                  echo "<p class='card-text fs-1 d-flex align-items-center justify-content-center'>Silahkan pilih fiter terlebih dahulu";
                 }
               ?>
+              </div>
+              
               
             </div>
           </div>
