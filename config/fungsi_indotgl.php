@@ -1,4 +1,9 @@
 <?php
+
+ // ungsi date_default_timezone_set() untuk mengatur timezone ke timezone yang Anda inginkan
+ date_default_timezone_set("Asia/Jakarta");
+
+
 function tgl_indo($tgl){
 	$tanggal = substr($tgl, 8, 2);
 	$bulan	 = getBulan(substr($tgl, 5, 2));

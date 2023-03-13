@@ -25,6 +25,7 @@ function is_active($page_name) {
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
     
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 
     <!-- Favicon -->
@@ -84,29 +85,57 @@ function is_active($page_name) {
                               
                             }
                             else {
+                                ?>
+                            <li id="header_notification_bar" class="dropdown" style="margin-top:20px;">
+                                <?php
                                 $total_unread = mysqli_query($con,"SELECT COUNT(*) AS total_unread FROM notifikasi_pelanggan WHERE status_baca = 0 AND id_pelanggan = '$id_pelanggan'"); 
                                 $data_unread = mysqli_fetch_assoc($total_unread);
                                 $total_unread_data = $data_unread['total_unread'];
+                                
                                 ?>
-                            <div class="dropdown m-auto py-0">
-                                <a class=" dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#" >
                                 <?php if(empty($total_unread_data)) {echo "<i class='bi bi-bell'></i>";} else {echo "<i class='bi bi-bell-fill'></i>";} ?>
-                                <span class="badge bg-theme"><?php echo"$total_unread_data" ?></span>
+                                <span class="badge"><?php echo"$total_unread_data" ?></span>
                                 </a>
-                                <ul class="dropdown-menu">
-                                <li>
-                                        <a href="../config/read_all.php">
-                                            <i class="fa fa-circle-o"></i> <p class ="">Read All</p>
+                                <ul class="dropdown-menu extended notification">
+                                    <li>
+                                        <p style="margin-left:15px; color: #c17a74;" >You have <?php echo"$total_unread_data" ?> new notifications 
+                                    </p>
+                                        <hr>
+                                    </li>
+                                    <?php
+                                    $query = mysqli_query($con, "SELECT * FROM notifikasi_pelanggan ORDER BY tanggal DESC LIMIT 5 ");
+                                    while($data=mysqli_fetch_array($query)){
+                                
+                                    ?>
+                                    <li class="notification-item" style="<?php if($data['status_baca'] == '0') {echo 'color:gray;';} ?>">
+                                        <a href="#">
+                                            <span class="label" style="margin-left:15px;"><i class="fa fa-bolt"></i></span>
+                                            <span class="message" style="margin-left:5px; <?php if($data['status_baca'] == '1') {echo 'color:gray;';} ?>"><?php echo"$data[pesan]";?></span>
+                                        </a>
+                                        <hr>
+                                    </li>
+                                    <?php }
+                                    
+                                    ?>
+                                    <li>
+                                        <a href="config/read_all_pelanggan.php">
+                                            <p style="margin-left:15px; margin-top:10px;">Read All</p>
                                         </a>
                                     </li>
-                                    <?php 
-                                    $sql = mysqli_query($con, "SELECT * FROM notifikasi_pelanggan where id_pelanggan = '$id_pelanggan'");
-                                    while ($data=mysqli_fetch_array($sql)) {
-                                    ?>
-                                    <li><a class="dropdown-item " href="#"><?php echo"$data[pesan]";?></a></li>
-                                    <?php } ?>
+                                    <style>
+                                        .dropdown-menu.notification {
+                                            padding: 20px;
+                                            width: 200px; /* atur lebar yang diinginkan */
+                                            max-height: 500px; /* atur tinggi maksimal jika konten notifikasi terlalu banyak */
+                                            overflow-x: auto;
+                                            /* overflow-y: auto; atur overflow menjadi auto agar ada scrollbar jika konten terlalu banyak */
+                                        }
+                                    </style>
+
+                                
                                 </ul>
-                                </div>
+                            </li>
                             <a href="logout.php" class="nav-item nav-link">Logout</a>
                             <?php } ?>
                             

@@ -1,8 +1,9 @@
 <?php
 include "koneksi.php";
 
+
 $query = "UPDATE notifikasi_pelanggan SET status_baca = '1'";
 mysqli_query($con, $query);
 
-header('location:../paneladmin/media.php?p=home');
+header('location:../media.php');
 ?>

@@ -31,7 +31,7 @@
         </div>
         <div class="row justify-content-center px-xl-5 pb-3">
             <?php
-            $terlaris=mysqli_query($con, "SELECT * FROM barang order by terjual desc LIMIT 4");
+            $terlaris=mysqli_query($con, "SELECT * FROM barang WHERE jumlah_barang > 0 order by terjual desc LIMIT 4");
             while ($data=mysqli_fetch_array($terlaris)){
             
             ?>
@@ -59,7 +59,7 @@
         </div>
         <div class="row justify-content-center px-xl-5 pb-3">
             <?php
-            $produk=mysqli_query($con, "SELECT * FROM barang order by kd_barang desc LIMIT 4");
+            $produk=mysqli_query($con, "SELECT * FROM barang WHERE jumlah_barang > 0 order by kd_barang desc LIMIT 4");
             while ($data=mysqli_fetch_array($produk)){
                 
             ?>

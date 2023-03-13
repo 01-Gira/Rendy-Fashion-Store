@@ -2,6 +2,7 @@
 require 'config/koneksi.php';
 require 'config/session.php';
 include 'config/fungsi_indotgl.php';
+
 if (($_SESSION['status'])=="Belum Login"){
     echo "<script>alert('Silahkan Login terlebih dahulu')
     window.location.replace('index.php');</script>";

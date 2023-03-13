@@ -2,6 +2,7 @@
 require 'config/koneksi.php';
 require 'config/session.php';
 include 'config/fungsi_indotgl.php';
+
 if (($_SESSION['status'])=="Belum Login"){
     echo "<script>alert('Silahkan Login terlebih dahulu')
     window.location.replace('login.php');</script>";
@@ -103,17 +104,19 @@ if ($id_pel_login !== $id_pel_beli){
             $nama = $_POST['nama'];
             $bank = $_POST['bank'];
             $jumlah = $_POST['jumlah'];
-            $tanggal = date("Y-m-d");
-
+            
+            $tanggal_pesan = date("Y-m-d H:i:s");
             
             // notifikasi pemesanan
             $tanggal_pesan = date("Y-m-d H:i:s");
             $pesan = "Pesanan dengan ID #$idpem telah dibayar.";
 
-            $con->query("INSERT INTO pembayaran(id_pembelian, nama, bank, jumlah, tanggal, bukti) VALUES ('$idpem','$nama','$bank','$jumlah','$tanggal','$namafix')");
+            $con->query("INSERT INTO pembayaran(id_pembelian, nama, bank, jumlah, tanggal, bukti) VALUES ('$idpem','$nama','$bank','$jumlah','$tanggal_pesan','$namafix')");
             // $con->query("UPDATE pembelian_barang SET pesan ='$pesan' WHERE id_pembelian='$idpem'");
             $con->query("INSERT INTO pembelian_barang (id_pelanggan, id_pembelian, kd_barang, jumlah, tanggal) VALUES ('$id_pel_login','$idpem','$kd_barang','$jumlah', '$tanggal_pesan')");
             $con->query("INSERT INTO notifikasi_pelanggan (id_pelanggan, id_pesanan, tanggal, pesan) VALUES ('$id_pel_login','$idpem','$tanggal','$pesan')");
+            $con->query("INSERT INTO notifikasi_admin (id_pelanggan, id_pembelian, tanggal, pesan) VALUES ('$id_pel_login','$idpem','$tanggal','$pesan')");
+
 
             $con->query("UPDATE pembelian SET status_pembelian='Sudah dibayar' WHERE id_pembelian='$idpem'");
 
