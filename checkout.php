@@ -160,7 +160,7 @@ if (empty($_SESSION["keranjang"]) OR !isset($_SESSION["keranjang"])) {
 
 
                             foreach ($_SESSION['keranjang'] as $kd_barang => $jumlah) {
-                                $con->query("INSERT INTO pembelian_barang (id_pelanggan, id_pembelian,  kd_barang, jumlah, tanggal, pesan) VALUES ('$id_pelanggan','$id_pembelian_barusan','$kd_barang','$jumlah', '$tanggal', '$pesan')");
+                                $con->query("INSERT INTO pembelian_barang (id_pelanggan, id_pembelian,  kd_barang, jumlah, tanggal) VALUES ('$id_pelanggan','$id_pembelian_barusan','$kd_barang','$jumlah', '$tanggal')");
                                 $con->query("INSERT INTO notifikasi_pelanggan (id_pelanggan, id_pesanan, tanggal, pesan) VALUES ('$id_pelanggan','$id_pembelian_barusan','$tanggal','$pesan')");
                                 $con->query("UPDATE barang SET jumlah_barang = jumlah_barang - $jumlah WHERE kd_barang='$kd_barang'");
                         

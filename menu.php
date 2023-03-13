@@ -1,6 +1,8 @@
 <?php
 include 'config/koneksi.php';
 include 'login.php';
+include 'session.php';
+
 
 $page = basename($_SERVER['PHP_SELF']); // mendapatkan nama halaman saat ini
 
@@ -22,8 +24,8 @@ function is_active($page_name) {
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
-
-
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -61,7 +63,7 @@ function is_active($page_name) {
                 </div>
             </form>
         </div>
-        <div class="col-sm-5 m-auto ">
+        <div class="col-l-3 m-auto ">
                 <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
                     <a href="" class="text-decoration-none d-block d-lg-none">
                         <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">Rendy's</span>Fashion Store</h1>
@@ -82,9 +84,32 @@ function is_active($page_name) {
                               
                             }
                             else {
-                            echo '<a href="logout.php" class="nav-item nav-link">Logout</a>';
-                            }
-                            ?>
+                                $total_unread = mysqli_query($con,"SELECT COUNT(*) AS total_unread FROM notifikasi_pelanggan WHERE status_baca = 0 AND id_pelanggan = '$id_pelanggan'"); 
+                                $data_unread = mysqli_fetch_assoc($total_unread);
+                                $total_unread_data = $data_unread['total_unread'];
+                                ?>
+                            <div class="dropdown m-auto py-0">
+                                <a class=" dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                <?php if(empty($total_unread_data)) {echo "<i class='bi bi-bell'></i>";} else {echo "<i class='bi bi-bell-fill'></i>";} ?>
+                                <span class="badge bg-theme"><?php echo"$total_unread_data" ?></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                <li>
+                                        <a href="../config/read_all.php">
+                                            <i class="fa fa-circle-o"></i> <p class ="">Read All</p>
+                                        </a>
+                                    </li>
+                                    <?php 
+                                    $sql = mysqli_query($con, "SELECT * FROM notifikasi_pelanggan where id_pelanggan = '$id_pelanggan'");
+                                    while ($data=mysqli_fetch_array($sql)) {
+                                    ?>
+                                    <li><a class="dropdown-item " href="#"><?php echo"$data[pesan]";?></a></li>
+                                    <?php } ?>
+                                </ul>
+                                </div>
+                            <a href="logout.php" class="nav-item nav-link">Logout</a>
+                            <?php } ?>
+                            
                         </div> 
                     </div>
                 </nav>

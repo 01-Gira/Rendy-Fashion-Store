@@ -13,6 +13,7 @@
             $_SESSION['pelanggan'] = $akun;
             $_SESSION['email'] = $email;
             $_SESSION['status'] = "Login";
+            $id_pelanggan = $_SESSION['pelanggan']['id_pelanggan'];
             if (isset($_SESSION['keranjang']) OR !empty($_SESSION['keranjang'])) {
                 echo "<meta http-equiv='refresh' content='1;url=checkout.php'>";
             }else{

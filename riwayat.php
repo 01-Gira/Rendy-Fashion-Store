@@ -123,20 +123,25 @@ if (($_SESSION['status'])=="Belum Login"){
                                 <a href="nota.php?id=<?php echo $pecah['id_pembelian']?>" class="btn btn-info me-3">Nota</a>
                                 <?php if($pecah['status_pembelian']=="pending"): ?>
                                     <a href="pembayaran.php?id=<?php echo $pecah['id_pembelian'];?>" class="btn btn-success"> Input Pembayaran </a>
-                                <?php elseif($pecah['status_pembelian']=="Barang dikirim"): ?>
+                                <?php elseif($pecah['status_pembelian']=="Barang Dikirim"): ?>
                                     <form method="post">
                                         <input type="hidden" name="id_pembelian" value="<?php echo $pecah['id_pembelian']; ?>">
                                         <button type="submit" name="terima_barang" class="btn btn-success mt-1" onclick="return confirm('Anda yakin barang sudah diterima?')"> Barang telah diterima</button>
-                                        <style>
-                    
-                                        </style>
                                     </form>
                                     <?php 
                                     // jika tombol "Barang telah diterima" ditekan
                                     if(isset($_POST['terima_barang'])) {
                                         $id_pembelian = $_POST['id_pembelian'];
+                                        $status_pembelian = 'Barang diterima';
                                         // update status pembelian menjadi "selesai"
-                                        $con->query("UPDATE pembelian SET status_pembelian='Selesai' WHERE id_pembelian='$id_pembelian'");
+                                        $con->query("UPDATE pembelian SET status_pembelian='$status_pembelian' WHERE id_pembelian='$id_pembelian'");
+
+                                        // notifikasi pemesanan
+                                        $tanggal = date("Y-m-d H:i:s");
+                                        $pesan = "Pesanan dengan ID #$id_pembelian $status_pembelian";
+
+                                        $con->query("INSERT INTO notifikasi_pelanggan (id_pelanggan, id_pesanan, tanggal, pesan) VALUES ('$id_pelanggan','$id_pembelian','$tanggal','$pesan')");
+
                                         echo"<script>alert('Barang telah diterima');
                                         window.location.replace('riwayat.php')</script>";
                                     }

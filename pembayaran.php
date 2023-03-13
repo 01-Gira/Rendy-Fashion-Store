@@ -112,7 +112,8 @@ if ($id_pel_login !== $id_pel_beli){
 
             $con->query("INSERT INTO pembayaran(id_pembelian, nama, bank, jumlah, tanggal, bukti) VALUES ('$idpem','$nama','$bank','$jumlah','$tanggal','$namafix')");
             // $con->query("UPDATE pembelian_barang SET pesan ='$pesan' WHERE id_pembelian='$idpem'");
-            $con->query("INSERT INTO pembelian_barang (id_pelanggan, id_pembelian, kd_barang, jumlah, tanggal, pesan) VALUES ('$id_pel_login','$idpem','$kd_barang','$jumlah', '$tanggal_pesan', '$pesan')");
+            $con->query("INSERT INTO pembelian_barang (id_pelanggan, id_pembelian, kd_barang, jumlah, tanggal) VALUES ('$id_pel_login','$idpem','$kd_barang','$jumlah', '$tanggal_pesan')");
+            $con->query("INSERT INTO notifikasi_pelanggan (id_pelanggan, id_pesanan, tanggal, pesan) VALUES ('$id_pel_login','$idpem','$tanggal','$pesan')");
 
             $con->query("UPDATE pembelian SET status_pembelian='Sudah dibayar' WHERE id_pembelian='$idpem'");
 

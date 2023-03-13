@@ -126,7 +126,7 @@ if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])) {
           <!-- notification dropdown start-->
           <li id="header_notification_bar" class="dropdown">
             <?php
-            $total_unread = mysqli_query($con, "SELECT COUNT(*) AS total_unread FROM pembelian_barang WHERE status_baca = 0");
+            $total_unread = mysqli_query($con, "SELECT COUNT(*) AS total_unread FROM notifikasi_pelanggan WHERE status_baca = 0");
             $data_unread = mysqli_fetch_assoc($total_unread);
             $total_unread_data = $data_unread['total_unread'];
             
@@ -143,7 +143,7 @@ if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])) {
                 
               </li>
               <?php
-              $query = mysqli_query($con, "SELECT * FROM pembelian_barang ORDER BY tanggal DESC LIMIT 5 ");
+              $query = mysqli_query($con, "SELECT * FROM notifikasi_pelanggan ORDER BY tanggal DESC LIMIT 5 ");
               while($data=mysqli_fetch_array($query)){
           
               ?>
@@ -153,11 +153,16 @@ if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])) {
                       <span class="message"><?php echo"$data[pesan]";?></span>
                   </a>
               </li>
-              <?php } ?>
+              <?php }
+              
+              ?>
               <li>
+                <form method="post">
                   <a href="../config/read_all.php">
-                      <i class="fa fa-circle-o"></i> Read All
+                        <i class="fa fa-circle-o"></i> Read All
                   </a>
+                </form>
+                 
               </li>
               <style>
                 

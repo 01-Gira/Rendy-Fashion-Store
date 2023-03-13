@@ -1,18 +1,19 @@
 <?php 
 include '../config/koneksi.php';
- error_reporting(0);
+error_reporting(0);
 
- if (empty($_SESSION['username']) AND empty($_SESSION['password'])) {
+if (empty($_SESSION['username']) AND empty($_SESSION['password'])) {
 
-   echo"<center>Untuk akses halaman ini Anda harus login dulu ya</center> <br>";
-   echo"<center><a href=../../index.php>Silahkan login</center>";
+echo"<center>Untuk akses halaman ini Anda harus login dulu ya</center> <br>";
+echo"<center><a href=../../index.php>Silahkan login</center>";
 }
 
 
 $id_pembelian = $_GET['id'];
 
 $sql=mysqli_query($con, "SELECT * FROM pembayaran WHERE id_pembelian='$id_pembelian'");
-$r=mysqli_fetch_array($sql);
+$r=mysqli_fetch_assoc($sql);
+$id_pelanggan = $r['id_pelanggan'];
 $tanggalindonesia = tgl_indo($r['tanggal']);
             
 ?>
@@ -69,6 +70,7 @@ $tanggalindonesia = tgl_indo($r['tanggal']);
         		<label>Pesan</label>
         		<input type="text" name="pesan" class="form-control" >
         	</div>
+			<a href='?p=pembelian' style='color: white; text-decoration: none; font-weight: bold;' class="btn btn-danger">Kembali</a>
         	<button class="btn btn-primary" name="proses">Proses</button>
         </form>
         <?php
@@ -76,7 +78,14 @@ $tanggalindonesia = tgl_indo($r['tanggal']);
         	$resi=$_POST['resi'];
         	$status=$_POST['status'];
 
-			$id_pelanggan = $r['id_pelanggan'];
+			// mendapatkan data pembelian
+			$ambil = $con->query("SELECT * FROM pembelian WHERE id_pembelian='$id_pembelian'");
+			$data = $ambil->fetch_assoc();
+
+
+			// mendapatkan id_pelanggan dari pembelian
+			$id_pelanggan = $data['id_pelanggan'];
+
 
 			// notifikasi pemesanan
 			$tanggal = date("Y-m-d H:i:s");
@@ -87,16 +96,16 @@ $tanggalindonesia = tgl_indo($r['tanggal']);
 				$pesan = $_POST['pesan'];
 			}
 
-        	$sql=mysqli_query($con,"UPDATE pembelian SET resi_pembelian ='$resi', status_pembelian='$status' WHERE id_pembelian='$id_pembelian'");   
-			$query = "INSERT INTO notifikasi_pelanggan (id_pelanggan, id_pesanan, tanggal, pesan) VALUES ('$id_pelanggan','$id_pembelian','$tanggal','$pesan')";
-			if(mysqli_query($con,$query)){
-				echo "Data berhasil disimpan";
-			}else {
-				echo "Data gagal disimpan";
-			}
-			var_dump($query);
-        	echo "<script>alert('Data pembelian terupdate'); 
-        	window.location.replace('?p=pembelian')</script>";
+        	// update status pembelian dan nomor resi
+			$con->query("UPDATE pembelian SET resi_pembelian='$resi', status_pembelian='$status' WHERE id_pembelian='$id_pembelian'");
+
+			// tambahkan notifikasi ke tabel notifikasi_pelanggan
+			$tanggal = date("Y-m-d H:i:s");
+			$con->query("INSERT INTO notifikasi_pelanggan (id_pelanggan, id_pesanan, tanggal, pesan) VALUES ('$id_pelanggan','$id_pembelian','$tanggal','$pesan')");
+
+			// tampilkan pesan sukses dan berikan tombol kembali ke halaman pembelian
+			echo "<script>alert('Data berhasil diubah')
+                            window.location.replace('media.php?p=pembelian');</script>";
         }
         ?>
     </div>
