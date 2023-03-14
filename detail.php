@@ -136,20 +136,12 @@ if (isset($_SESSION['pelanggan'])) {
             </div>
         </div>
         <?php
-
-
-
-             $sql2 = mysqli_query($con,"SELECT COUNT(*) AS jumlah_review FROM review_produk WHERE id_produk='$kd_barang' ");
-             $count = mysqli_fetch_assoc($sql2); 
-             $jumlah_review = $count['jumlah_review'];
-             
+            $sql2 = mysqli_query($con,"SELECT COUNT(rp.id_review) AS jumlah_review, p.nama_pelanggan, rp.tanggal, rp.rating, rp.pesan_review FROM review_produk rp INNER JOIN pelanggan p ON rp.id_pengguna = p.id_pelanggan WHERE rp.id_produk='$kd_barang'");
+            $count = mysqli_fetch_assoc($sql2); 
+            $jumlah_review = $count['jumlah_review'];
+            
         ?>
         <div class="row px-xl-5">
-            <?php
-             $sql2 = mysqli_query($con,"SELECT COUNT(*) AS jumlah_review FROM review_produk WHERE id_produk='$kd_barang' ");
-             $count = mysqli_fetch_assoc($sql2); 
-             $jumlah_review = $count['jumlah_review']
-            ?>
             <div class="col">
                 <div class="nav nav-tabs justify-content-center border-secondary mb-4">
                     <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
@@ -163,59 +155,86 @@ if (isset($_SESSION['pelanggan'])) {
                     <div class="tab-pane fade" id="tab-pane-2">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4 class="mb-4">1 review for "Colorful Stylish Shirt"</h4>
-                                <div class="media mb-4">
-                                    <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                                    <div class="media-body">
-                                        <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                        <div class="text-primary mb-2">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half-alt"></i>
-                                            <i class="far fa-star"></i>
+                                <h4 class="mb-4"><?php echo "$jumlah_review"?> ulasan untuk produk "<?php echo $detail['nama'] ?>"</h4>
+                                <div class="review-list" style="max-height: 400px; <?php ($jumlah_review > 3) ? 'overflow-y: scroll;' : '';?>"> 
+                                    <?php 
+                                    // melakukan fetch_assoc sekali lagi agar pointer di hasil query kembali ke awal
+                                        mysqli_data_seek($sql2, 0);
+                                        while($data_review = mysqli_fetch_assoc($sql2)) { 
+                                            $tanggalindonesia = tgl_indo($data_review['tanggal']);
+                                            ?>
+                                    <div class="media mb-4">
+                                        <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                        <div class="media-body">
+                                            <h6><?php echo $data_review['nama_pelanggan'] ?><small> - <i><?php echo $tanggalindonesia ?></i></small></h6>
+                                            <div class="text-primary mb-2">
+                                                <?php for($i=1; $i<=$data_review['rating']; $i++) { ?>
+                                                    <i class="fas fa-star"></i>
+                                                <?php } 
+                                                for($j=$i; $j<=5; $j++) { ?>
+                                                    <i class="far fa-star"></i>
+                                                <?php } ?>
+                                            </div>
+                                            <p><?php echo $data_review['pesan_review'] ?></p>
                                         </div>
-                                        <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
                                     </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                             <?php 
-                                $sql = "SELECT p.*, pb.jumlah
-                                FROM pembelian p
-                                INNER JOIN pembelian_barang pb ON p.id_pembelian = pb.id_pembelian
-                                WHERE p.id_pelanggan = $id_pelanggan AND p.status_pembelian = 'Pesanan Selesai'";
+                                // $sql_join_pembelian = "SELECT p.*, pb.jumlah
+                                // FROM pembelian p
+                                // INNER JOIN pembelian_barang pb ON p.id_pembelian = pb.id_pembelian
+                                // WHERE p.id_pelanggan = $id_pelanggan AND p.status_pembelian = 'Pesanan Selesai'";
+                                // $result = mysqli_query($con, $sql_join_pembelian);
+                                // $sql = "SELECT pb.*, p.status_pembelian FROM pembelian p INNER JOIN pembelian_barang pb ON p.id_pembelian = pb.id_pembelian LEFT JOIN review_produk r ON pb.kd_barang = r.id_produk AND p.id_pelanggan = r.id_pengguna WHERE p.id_pelanggan = '$id_pelanggan' AND p.status_pembelian = 'Pesanan Selesai' AND r.id_review IS NULL;";
+                                
+                                // Query untuk mengambil data dari tabel review_produk, pembelian, dan pembelian_barang
+                                $sql = "SELECT r.id_review, p.status_pembelian, pb.jumlah FROM review_produk r 
+                                JOIN pembelian_barang pb ON r.id_produk = pb.kd_barang
+                                JOIN pembelian p ON pb.id_pembelian = p.id_pembelian
+                                WHERE r.id_pengguna = '$id_pelanggan' AND pb.kd_barang = '$kd_barang' AND p.status_pembelian = 'Pesanan Selesai'";
                                 $result = mysqli_query($con, $sql);
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    $id_pembelian = $row['id_pembelian'];
-                                    $jumlah_barang = $row['jumlah'];
-                                    $status_pembelian = $row['status_pembelian'];
+                                
+                                if (mysqli_num_rows($result) > 0) {
+                                    ?>
+                                    <div class="col-md-6">
+                                        <h4 class="mb-4">Anda sudah menulis ulasan!</h4>
+                                    </div>
+                                <?php } else {
+                                    // Ambil jumlah pembelian barang
+                                    $sql_jumlah_barang = "SELECT jumlah FROM pembelian_barang WHERE kd_barang = '$kd_barang' AND id_pembelian IN (SELECT id_pembelian FROM pembelian WHERE id_pelanggan = '$id_pelanggan' AND status_pembelian = 'Pesanan Selesai')";
+                                    $result_jumlah_barang = mysqli_query($con, $sql_jumlah_barang);
+                                    $row_jumlah_barang = mysqli_fetch_assoc($result_jumlah_barang);
+                                    $jumlah_barang = $row_jumlah_barang['jumlah'];
 
-                                if($jumlah_barang > 0 && $status_pembelian == 'Pesanan Selesai'){
-                                ?>
-                            <div class="col-md-6">
-                                <h4 class="mb-4">Tinggalkan review anda untuk produk ini!</h4>
-                                <form method="post">
-                                    <div class="d-flex my-3">
-                                        <p class="mb-0 mr-2">Berikan bintang untuk produk ini! * :</p>
-                                        <div class="text-primary">
-                                            <?php for($i = 1; $i <= 5; $i++): ?>
-                                                <input type="radio" id="star<?php echo $i ?>" name="rating" value="<?php echo $i ?>" required>
-                                                <label for="star<?php echo $i ?>"><i class="far fa-star"></i></label>
-                                            <?php endfor; ?>
-                                        </div>
+                                    // Jika jumlah pembelian barang lebih dari 1 dan status_pembelian = Pesanan Selesai, buka form review
+                                    if ($jumlah_barang > 0) { ?>
+                                    <div class="col-md-6">
+                                        <h4 class="mb-4">Tinggalkan review anda untuk produk ini!</h4>
+                                        <form method="post">
+                                            <div class="d-flex my-3">
+                                                <p class="mb-0 mr-2">Berikan bintang untuk produk ini! * :</p>
+                                                <div class="text-primary">
+                                                    <?php for($i = 1; $i <= 5; $i++): ?>
+                                                        <input type="radio" id="star<?php echo $i ?>" name="rating" value="<?php echo $i ?>" required>
+                                                        <label for="star<?php echo $i ?>"><i class="far fa-star"></i></label>
+                                                    <?php endfor; ?>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="message">Bagaimana tanggapan anda tentang produk ini!</label>
+                                                <textarea id="message" cols="30" rows="5" class="form-control" placeholder="Opsional" name="text_review"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <input type="submit" name="review_submit" value="Leave Your Review" class="btn btn-primary px-3">
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="message">Bagaimana tanggapan anda tentang produk ini!</label>
-                                        <textarea id="message" cols="30" rows="5" class="form-control" placeholder="Opsional" name="text_review"></textarea>
-                                    </div>
-                                    <div class="form-group mb-0">
-                                        <input type="submit" name="review_submit" value="Leave Your Review" class="btn btn-primary px-3">
-                                    </div>
-                                </form>
-                            </div>
                             <?php 
-                                 }
+                                    }
                                 }
+                                
                                 if(isset($_POST['review_submit'])) {
                                     $rating = $_POST['rating'];
                                     $pesan = $_POST['text_review'];
@@ -322,5 +341,5 @@ if (isset($_SESSION['pelanggan'])) {
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
-
+</body>
 </html>

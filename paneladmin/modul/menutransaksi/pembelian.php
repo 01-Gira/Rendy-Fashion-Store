@@ -118,7 +118,7 @@ include '../config/koneksi.php';
                         </div>
                         <?php } ?>
                         <?php if($r['status_pembelian']!=="pending" && $r['status_pembelian']!=="Barang Diterima" && $r['status_pembelian']!=="Pesanan Selesai" ){ ?>
-                        <div class="col">
+                        <div class="col" style="margin-left: -130px;">
                           <a href="?p=pembayaran&id=<?php echo $r['id_pembelian'];?>" class="btn btn-success"> Lihat Pembayaran </a>
                         </div>
                         <?php } ?>  
