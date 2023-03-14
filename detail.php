@@ -3,6 +3,13 @@ require 'config/koneksi.php';
 require 'config/session.php';
 require 'config/kompres.php'; 
 include 'config/fungsi_indotgl.php';
+
+
+if (isset($_SESSION['pelanggan'])) {
+    $id_pelanggan = $_SESSION['pelanggan']['id_pelanggan'];
+} else {
+    $id_pelanggan = 0; // nilai default jika pelanggan belum login
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -128,11 +135,20 @@ include 'config/fungsi_indotgl.php';
                 </div>
             </div>
         </div>
+        <?php
+
+
+
+             $sql2 = mysqli_query($con,"SELECT COUNT(*) AS jumlah_review FROM review_produk WHERE id_produk='$kd_barang' ");
+             $count = mysqli_fetch_assoc($sql2); 
+             $jumlah_review = $count['jumlah_review'];
+             
+        ?>
         <div class="row px-xl-5">
             <div class="col">
                 <div class="nav nav-tabs justify-content-center border-secondary mb-4">
                     <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
-                    <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Reviews (0)</a>
+                    <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Reviews (<?php echo "$jumlah_review" ?>)</a>
                 </div>
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="tab-pane-1">
@@ -158,37 +174,54 @@ include 'config/fungsi_indotgl.php';
                                     </div>
                                 </div>
                             </div>
+                            <?php 
+                                $sql = "SELECT p.*, pb.jumlah
+                                FROM pembelian p
+                                INNER JOIN pembelian_barang pb ON p.id_pembelian = pb.id_pembelian
+                                WHERE p.id_pelanggan = $id_pelanggan AND p.status_pembelian = 'Pesanan Selesai'";
+                                $result = mysqli_query($con, $sql);
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $id_pembelian = $row['id_pembelian'];
+                                    $jumlah_barang = $row['jumlah'];
+                                    $status_pembelian = $row['status_pembelian'];
+
+                                if($jumlah_barang > 0 && $status_pembelian == 'Pesanan Selesai'){
+                                ?>
                             <div class="col-md-6">
-                                <h4 class="mb-4">Leave a review</h4>
-                                <small>Your email address will not be published. Required fields are marked *</small>
-                                <div class="d-flex my-3">
-                                    <p class="mb-0 mr-2">Your Rating * :</p>
-                                    <div class="text-primary">
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                </div>
-                                <form>
-                                    <div class="form-group">
-                                        <label for="message">Your Review *</label>
-                                        <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
+                                <h4 class="mb-4">Tinggalkan review anda untuk produk ini!</h4>
+                                <form method="post">
+                                    <div class="d-flex my-3">
+                                        <p class="mb-0 mr-2">Berikan bintang untuk produk ini! * :</p>
+                                        <div class="text-primary">
+                                            <?php for($i = 1; $i <= 5; $i++): ?>
+                                                <input type="radio" id="star<?php echo $i ?>" name="rating" value="<?php echo $i ?>" required>
+                                                <label for="star<?php echo $i ?>"><i class="far fa-star"></i></label>
+                                            <?php endfor; ?>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="name">Your Name *</label>
-                                        <input type="text" class="form-control" id="name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Your Email *</label>
-                                        <input type="email" class="form-control" id="email">
+                                        <label for="message">Bagaimana tanggapan anda tentang produk ini!</label>
+                                        <textarea id="message" cols="30" rows="5" class="form-control" placeholder="Opsional" name="text_review"></textarea>
                                     </div>
                                     <div class="form-group mb-0">
-                                        <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
+                                        <input type="submit" name="review_submit" value="Leave Your Review" class="btn btn-primary px-3">
                                     </div>
                                 </form>
                             </div>
+                            <?php 
+                                 }
+                                }
+                                if(isset($_POST['review_submit'])) {
+                                    $rating = $_POST['rating'];
+                                    $pesan = $_POST['text_review'];
+                                    $tanggal = date("Y-m-d H:i:s");
+
+                                    $con->query("INSERT INTO review_produk (id_pengguna, id_produk, rating, pesan_review, tanggal) VALUES ('$id_pelanggan','$kd_barang','$rating','$pesan','$tanggal')");
+
+                                    echo"<script>alert('Terima kasih atas ulasan anda!');
+                                    window.location.replace('detail.php?kd_barang=$kd_barang')</script>";
+                                }
+                                ?>
                         </div>
                     </div>
                 </div>
