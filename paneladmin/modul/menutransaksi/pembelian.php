@@ -105,15 +105,26 @@ include '../config/koneksi.php';
                       <td><?php echo $r['status_pembelian']?></td>
                   		<td>Rp.<?php echo number_format($r['total_pembelian']);?></td>
                   		<td>
-                      <div style="display: flex;">
-                      <a href="?p=detail_pembelian&id=<?php echo $r['id_pembelian'];?>" class="btn btn-primary" style="margin-right: 5px;"> Detail </a> 
-                      <?php if($r['status_pembelian']=="!pending"): ?>
-                      <a href="?p=pembayaran&id=<?php echo $r['id_pembelian'];?>" class="btn btn-success" style="margin-right: 5px;"> Lihat Pembayaran </a>
-                      <?php elseif($r['status_pembelian']=="Barang Diterima"): ?>
+                      <div class="row">
+                        <div class="col mx-4">
+                        <a href="?p=detail_pembelian&id=<?php echo $r['id_pembelian'];?>" class="btn btn-primary"> Detail </a> 
+                        </div>
+                        <?php if($r['status_pembelian']=="Barang Diterima") { ?>
+                        <div class="col" style="margin-left: -90px;">
                         <form method="post">
                             <input type="hidden" name="id_pembelian" value="<?php echo $r['id_pembelian']; ?>">
-                            <button type="submit" name="pesanan_selesai" class="btn btn-warning" style="margin-right: 5px;" onclick="return confirm('Anda yakin pesanan sudah selesai?')"> Selesai</button>
+                            <button type="submit" name="pesanan_selesai" class="btn btn-warning"onclick="return confirm('Anda yakin pesanan sudah selesai?')"> Selesai</button>
                         </form>
+                        </div>
+                        <?php } ?>
+                        <?php if($r['status_pembelian']!=="pending" && $r['status_pembelian']!=="Barang Diterima" && $r['status_pembelian']!=="Pesanan Selesai" ){ ?>
+                        <div class="col">
+                          <a href="?p=pembayaran&id=<?php echo $r['id_pembelian'];?>" class="btn btn-success"> Lihat Pembayaran </a>
+                        </div>
+                        <?php } ?>  
+                      </div>
+                      
+                      
                         <?php 
                         // jika tombol "Barang telah diterima" ditekan
                         if(isset($_POST['pesanan_selesai'])) {
@@ -131,7 +142,7 @@ include '../config/koneksi.php';
                             window.location.replace('media.php?p=pembelian')</script>";
                         }
                         ?>
-                      <?php endif ?>   
+                       
                       </div>
                       </td>
                   	</tr>

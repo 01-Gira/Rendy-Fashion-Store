@@ -93,7 +93,7 @@
                   echo "<p class='card-text fs-1 d-flex align-items-center justify-content-center'>Total Penjualan $hari $nama_bulan $tahun: Rp." . number_format($total_penjualan) . "</p>";
 
                 } else if (empty($_POST['tahun'])  && empty($_POST['bulan']) && !empty($_POST['hari'])) {
-                  // Jika tidak memilih apapun tahun dan bulan
+                  // Jika tidak memilih tahun dan bulan
                   echo "<p class='card-text fs-1 d-flex align-items-center justify-content-center'>Silahkan pilih fiter tahun dan bulan terlebih dahulu";
                 }else {
                   // Jika tidak memilih apapun

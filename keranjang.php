@@ -203,5 +203,6 @@ if (empty($_SESSION["keranjang"]) OR !isset($_SESSION["keranjang"])) {
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    </body>
 </html>
-</body>
+
