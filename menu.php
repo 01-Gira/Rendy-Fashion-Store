@@ -3,7 +3,11 @@ include 'config/koneksi.php';
 include 'login.php';
 include 'session.php';
 
-$id_pelanggan = $_SESSION['pelanggan']['id_pelanggan'];
+if (isset($_SESSION['pelanggan'])) {
+    $id_pelanggan = $_SESSION['pelanggan']['id_pelanggan'];
+} else {
+    $id_pelanggan = 0; // nilai default jika pelanggan belum login
+}
 
 $page = basename($_SERVER['PHP_SELF']); // mendapatkan nama halaman saat ini
 

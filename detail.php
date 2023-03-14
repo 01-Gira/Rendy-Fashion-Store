@@ -198,11 +198,11 @@ if (isset($_SESSION['pelanggan'])) {
                                 $result = mysqli_query($con, $sql);
                                 if(mysqli_num_rows($result) > 0){
                                     $row = mysqli_fetch_assoc($result);
-                                    $id_pembelian = isset($row['id_pembelian']) ? $row['id_pembelian'] : '';
+                                    
                                     $tanggalindonesia = isset($row['tanggal']) ? tgl_indo($row['tanggal']) : '';
                                 }
                                 else{
-                                    $id_pembelian = '';
+                                
                                     $tanggalindonesia = '';
                                 }
                                 if (mysqli_num_rows($result) > 0) {
@@ -225,12 +225,19 @@ if (isset($_SESSION['pelanggan'])) {
                                     </div>
                                 <?php } else {
                                     // Ambil jumlah pembelian barang
-                                    $sql_jumlah_barang = "SELECT jumlah FROM pembelian_barang WHERE kd_barang = '$kd_barang' AND id_pembelian IN (SELECT id_pembelian FROM pembelian WHERE id_pelanggan = '$id_pelanggan' AND status_pembelian = 'Pesanan Selesai')";
+                                    $sql_jumlah_barang = "SELECT id_pembelian, jumlah FROM pembelian_barang WHERE kd_barang = '$kd_barang' AND id_pembelian IN (SELECT id_pembelian FROM pembelian WHERE id_pelanggan = '$id_pelanggan' AND status_pembelian = 'Pesanan Selesai')";
                                     $result_jumlah_barang = mysqli_query($con, $sql_jumlah_barang);
-                                    $row_jumlah_barang = mysqli_fetch_assoc($result_jumlah_barang);
-                                    $jumlah_barang = $row_jumlah_barang['jumlah'];
                                     
-
+                                    if(mysqli_num_rows($result_jumlah_barang) > 0){
+                                        $row_jumlah_barang = mysqli_fetch_assoc($result_jumlah_barang);
+                                        $id_pembelian = $row_jumlah_barang['id_pembelian'];
+                                        $jumlah_barang = $row_jumlah_barang['jumlah'];
+                                        
+                                    }
+                                    else{
+                                        $id_pembelian = '';
+                                        $jumlah_barang = '';  
+                                    }
                                     // Jika jumlah pembelian barang lebih dari 1 dan status_pembelian = Pesanan Selesai, buka form review
                                     if ($jumlah_barang > 0) { ?>
                                     <div class="col-md-6">
@@ -263,12 +270,14 @@ if (isset($_SESSION['pelanggan'])) {
                                     $pesan = $_POST['text_review'];
                                     $tanggal = date("Y-m-d H:i:s");
 
-                                    $pesan_notifikasi = "Terima Kasih telah memberikan ulasan pada produk #$kd_barang";
-                                    // $pesan_admin = "User ID#$id_pelanggan telah memberikan ulasan pada produk #$kd_barang";
+
+
+                                    $pesan_notifikasi = "Terima Kasih telah memberikan ulasan pada produk #$kd_barang dengan id pesanan #$id_pembelian";
+                                    $pesan_admin = "User ID#$id_pelanggan telah memberikan ulasan pada produk #$kd_barang";
 
                                     $con->query("INSERT INTO review_produk (id_pengguna, id_produk, rating, pesan_review, tanggal) VALUES ('$id_pelanggan','$kd_barang','$rating','$pesan','$tanggal')");
                                     $con->query("INSERT INTO notifikasi_pelanggan (id_pelanggan, id_pesanan, tanggal, pesan) VALUES ('$id_pelanggan','$id_pembelian','$tanggal','$pesan_notifikasi')");
-                                    // $con->query("INSERT INTO notifikasi_admin (id_pelanggan, id_pembelian, tanggal, pesan) VALUES ('$id_pelanggan','$id_pembelian','$tanggal','$pesan_admin')");
+                                    $con->query("INSERT INTO notifikasi_admin (id_pelanggan, id_pembelian, tanggal, pesan) VALUES ('$id_pelanggan','$id_pembelian','$tanggal','$pesan_admin')");
                                     echo"<script>alert('Terima kasih atas ulasan anda!');
                                     window.location.replace('detail.php?kd_barang=$kd_barang')</script>";
                                 }
