@@ -137,15 +137,15 @@ include 'config/fungsi_indotgl.php';
             ?>
             <div class="col">
                 <div class="nav nav-tabs justify-content-center border-secondary mb-4">
-                    <a class="nav-item nav-link " data-toggle="tab" href="#tab-pane-1">Description</a>
-                    <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-2">Reviews (<?php echo "$jumlah_review" ?>)</a>
+                    <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
+                    <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Reviews (<?php echo "$jumlah_review" ?>)</a>
                 </div>
                 <div class="tab-content">
-                    <div class="tab-pane fade show " id="tab-pane-1">
+                    <div class="tab-pane fade show active" id="tab-pane-1">
                         <h4 class="mb-3">Product Deskripsi</h4>
                         <p><?php echo"$detail[deskripsi]";?></p>
                     </div>
-                    <div class="tab-pane fade active" id="tab-pane-2">
+                    <div class="tab-pane fade" id="tab-pane-2">
                         <div class="row">
                             <div class="col-md-6">
                                 <h4 class="mb-4">1 review for "Colorful Stylish Shirt"</h4>
@@ -311,6 +311,5 @@ include 'config/fungsi_indotgl.php';
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-</body>
-
+    </body>
 </html>
