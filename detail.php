@@ -182,7 +182,7 @@ include 'config/fungsi_indotgl.php';
                                 <h4 class="mb-4">Tinggalkan review anda untuk produk ini!</h4>
                                 <form method="post">
                                         <div class="d-flex my-3">
-                                            <p class="mb-0 mr-2">Berikan bintang untuk produk ini! * :</p>
+                                            <p class="mb-0 mr-2">Berikan bintang untuk produk ini? :</p>
                                             <div class="text-primary">
                                                 <?php for($i = 1; $i <= 5; $i++): ?>
                                                     <input type="radio" id="star<?php echo $i ?>" name="rating" value="<?php echo $i ?>" required>
