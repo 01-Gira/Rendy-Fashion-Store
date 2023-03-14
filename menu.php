@@ -105,7 +105,7 @@ function is_active($page_name) {
                                         <hr>
                                     </li>
                                     <?php
-                                    $query = mysqli_query($con, "SELECT * FROM notifikasi_pelanggan ORDER BY tanggal WHERE id_pelanggan = '$id_pelanggan' DESC LIMIT 5 ");
+                                    $query = mysqli_query($con, "SELECT * FROM notifikasi_pelanggan WHERE id_pelanggan = '$id_pelanggan' ORDER BY tanggal DESC LIMIT 5 ");
                                     while($data=mysqli_fetch_array($query)){
                                 
                                     ?>
