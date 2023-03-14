@@ -140,7 +140,7 @@ if (($_SESSION['status'])=="Belum Login"){
                                         // notifikasi pemesanan
                                         $tanggal = date("Y-m-d H:i:s");
                                         if($status_pembelian=='Barang Diterima')
-                                        $pesan = "Pesanan dengan ID #$id_pembelian $status_pembelian silahkan tinggalkan review!";
+                                        $pesan = "Pesanan dengan ID #$id_pembelian $status_pembelian silahkan tinggalkan ulasan!";
 
                                         $con->query("INSERT INTO notifikasi_pelanggan (id_pelanggan, id_pesanan, tanggal, pesan) VALUES ('$id_pelanggan','$id_pembelian','$tanggal','$pesan')");
 

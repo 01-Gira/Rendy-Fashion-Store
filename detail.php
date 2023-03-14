@@ -156,11 +156,11 @@ if (isset($_SESSION['pelanggan'])) {
                         <div class="row">
                             <div class="col-md-6">
                                 <h4 class="mb-4"><?php echo "$jumlah_review"?> ulasan untuk produk "<?php echo $detail['nama'] ?>"</h4>
-                                <div class="review-list" style="max-height: 400px; <?php ($jumlah_review > 3) ? 'overflow-y: scroll;' : '';?>"> 
-                                    <?php 
+                                <div class="review-list" style="max-height: 400px;  <?= ($jumlah_review > 3) ? 'overflow-y: scroll;' : ''; ?>"> 
+                                <?php 
                                     // melakukan fetch_assoc sekali lagi agar pointer di hasil query kembali ke awal
-                                        mysqli_data_seek($sql2, 0);
-                                        while($data_review = mysqli_fetch_assoc($sql2)) { 
+                                        $sql3 = mysqli_query($con, "SELECT rp.*, p.nama_pelanggan FROM review_produk rp INNER JOIN pelanggan p ON rp.id_pengguna = p.id_pelanggan WHERE rp.id_produk='$kd_barang' ORDER BY tanggal DESC");
+                                        while($data_review = mysqli_fetch_assoc($sql3)) { 
                                             $tanggalindonesia = tgl_indo($data_review['tanggal']);
                                             ?>
                                     <div class="media mb-4">
@@ -190,16 +190,38 @@ if (isset($_SESSION['pelanggan'])) {
                                 // $sql = "SELECT pb.*, p.status_pembelian FROM pembelian p INNER JOIN pembelian_barang pb ON p.id_pembelian = pb.id_pembelian LEFT JOIN review_produk r ON pb.kd_barang = r.id_produk AND p.id_pelanggan = r.id_pengguna WHERE p.id_pelanggan = '$id_pelanggan' AND p.status_pembelian = 'Pesanan Selesai' AND r.id_review IS NULL;";
                                 
                                 // Query untuk mengambil data dari tabel review_produk, pembelian, dan pembelian_barang
-                                $sql = "SELECT r.id_review, p.status_pembelian, pb.jumlah FROM review_produk r 
+                                $sql = "SELECT r.id_review, r.rating, r.pesan_review, r.tanggal, p.status_pembelian, pb.id_pembelian, pb.jumlah, pl.nama_pelanggan FROM review_produk r 
                                 JOIN pembelian_barang pb ON r.id_produk = pb.kd_barang
                                 JOIN pembelian p ON pb.id_pembelian = p.id_pembelian
+                                JOIN pelanggan pl ON r.id_pengguna = pl.id_pelanggan
                                 WHERE r.id_pengguna = '$id_pelanggan' AND pb.kd_barang = '$kd_barang' AND p.status_pembelian = 'Pesanan Selesai'";
                                 $result = mysqli_query($con, $sql);
-                                
+                                if(mysqli_num_rows($result) > 0){
+                                    $row = mysqli_fetch_assoc($result);
+                                    $id_pembelian = isset($row['id_pembelian']) ? $row['id_pembelian'] : '';
+                                    $tanggalindonesia = isset($row['tanggal']) ? tgl_indo($row['tanggal']) : '';
+                                }
+                                else{
+                                    $id_pembelian = '';
+                                    $tanggalindonesia = '';
+                                }
                                 if (mysqli_num_rows($result) > 0) {
                                     ?>
                                     <div class="col-md-6">
                                         <h4 class="mb-4">Anda sudah menulis ulasan!</h4>
+                                        <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                        <div class="media-body">
+                                            <h6><?php echo $row['nama_pelanggan'] ?><small> - <i><?php echo $tanggalindonesia ?></i></small></h6>
+                                            <div class="text-primary mb-2">
+                                                <?php for($i=1; $i<=$row['rating']; $i++) { ?>
+                                                    <i class="fas fa-star"></i>
+                                                <?php } 
+                                                for($j=$i; $j<=5; $j++) { ?>
+                                                    <i class="far fa-star"></i>
+                                                <?php } ?>
+                                            </div>
+                                            <p><?php echo $row['pesan_review'] ?></p>
+                                        </div>
                                     </div>
                                 <?php } else {
                                     // Ambil jumlah pembelian barang
@@ -207,6 +229,7 @@ if (isset($_SESSION['pelanggan'])) {
                                     $result_jumlah_barang = mysqli_query($con, $sql_jumlah_barang);
                                     $row_jumlah_barang = mysqli_fetch_assoc($result_jumlah_barang);
                                     $jumlah_barang = $row_jumlah_barang['jumlah'];
+                                    
 
                                     // Jika jumlah pembelian barang lebih dari 1 dan status_pembelian = Pesanan Selesai, buka form review
                                     if ($jumlah_barang > 0) { ?>
@@ -240,8 +263,12 @@ if (isset($_SESSION['pelanggan'])) {
                                     $pesan = $_POST['text_review'];
                                     $tanggal = date("Y-m-d H:i:s");
 
-                                    $con->query("INSERT INTO review_produk (id_pengguna, id_produk, rating, pesan_review, tanggal) VALUES ('$id_pelanggan','$kd_barang','$rating','$pesan','$tanggal')");
+                                    $pesan_notifikasi = "Terima Kasih telah memberikan ulasan pada produk #$kd_barang";
+                                    // $pesan_admin = "User ID#$id_pelanggan telah memberikan ulasan pada produk #$kd_barang";
 
+                                    $con->query("INSERT INTO review_produk (id_pengguna, id_produk, rating, pesan_review, tanggal) VALUES ('$id_pelanggan','$kd_barang','$rating','$pesan','$tanggal')");
+                                    $con->query("INSERT INTO notifikasi_pelanggan (id_pelanggan, id_pesanan, tanggal, pesan) VALUES ('$id_pelanggan','$id_pembelian','$tanggal','$pesan_notifikasi')");
+                                    // $con->query("INSERT INTO notifikasi_admin (id_pelanggan, id_pembelian, tanggal, pesan) VALUES ('$id_pelanggan','$id_pembelian','$tanggal','$pesan_admin')");
                                     echo"<script>alert('Terima kasih atas ulasan anda!');
                                     window.location.replace('detail.php?kd_barang=$kd_barang')</script>";
                                 }
