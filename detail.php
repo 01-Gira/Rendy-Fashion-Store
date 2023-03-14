@@ -4,7 +4,6 @@ require 'config/session.php';
 require 'config/kompres.php'; 
 include 'config/fungsi_indotgl.php';
 
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -138,15 +137,15 @@ include 'config/fungsi_indotgl.php';
             ?>
             <div class="col">
                 <div class="nav nav-tabs justify-content-center border-secondary mb-4">
-                    <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
-                    <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Reviews (<?php echo "$jumlah_review" ?>)</a>
+                    <a class="nav-item nav-link " data-toggle="tab" href="#tab-pane-1">Description</a>
+                    <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-2">Reviews (<?php echo "$jumlah_review" ?>)</a>
                 </div>
                 <div class="tab-content">
-                    <div class="tab-pane fade show active" id="tab-pane-1">
+                    <div class="tab-pane fade show " id="tab-pane-1">
                         <h4 class="mb-3">Product Deskripsi</h4>
                         <p><?php echo"$detail[deskripsi]";?></p>
                     </div>
-                    <div class="tab-pane fade" id="tab-pane-2">
+                    <div class="tab-pane fade active" id="tab-pane-2">
                         <div class="row">
                             <div class="col-md-6">
                                 <h4 class="mb-4">1 review for "Colorful Stylish Shirt"</h4>
@@ -171,13 +170,14 @@ include 'config/fungsi_indotgl.php';
                                 FROM pembelian p
                                 INNER JOIN pembelian_barang pb ON p.id_pembelian = pb.id_pembelian
                                 WHERE p.id_pelanggan = $id_pelanggan AND p.status_pembelian = 'Pesanan Selesai'";
-                                $result = mysqli_query($koneksi, $sql);
+                                $result = mysqli_query($con, $sql);
                     
                                 while ($row = mysqli_fetch_assoc($result)):
                                     $id_pembelian = $row['id_pembelian'];
                                     $jumlah_barang = $row['jumlah'];
+                                    $status_pembelian = $row['status_pembelian'];
 
-                                if($r['jumlah_barang'] > 0 && $r['status_pembelian'] == 'Pesanan Selesai'): 
+                                if($jumlah_barang > 0 && $row['status_pembelian'] == 'Pesanan Selesai'): 
                                 ?>
                                 <h4 class="mb-4">Tinggalkan review anda untuk produk ini!</h4>
                                 <form method="post">
@@ -300,10 +300,8 @@ include 'config/fungsi_indotgl.php';
 
 
     <!-- JavaScript Libraries -->
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
